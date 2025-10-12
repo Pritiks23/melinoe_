@@ -2,8 +2,6 @@ const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
 const messages = document.getElementById("messages");
 
-const TAVILY_API_KEY = "YOUR_TAVILY_API_KEY"; // Replace with your actual key
-
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const question = input.value.trim();
@@ -12,25 +10,22 @@ form.addEventListener("submit", async (e) => {
   addMessage("user", question);
   input.value = "";
 
-  addMessage("bot", "Searching...");
+  addMessage("bot", "🔍 Searching...");
 
   try {
-    const response = await fetch("https://api.tavily.com/search", {
+    const response = await fetch("/api/search", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${TAVILY_API_KEY}`,
-      },
-      body: JSON.stringify({
-        query: question,
-        max_results: 5,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: question }),
     });
+
+    if (!response.ok) throw new Error("Network response was not ok");
 
     const data = await response.json();
     const answer = formatResults(data.results);
     updateLastBotMessage(answer);
   } catch (err) {
+    console.error("Error:", err);
     updateLastBotMessage("❌ Error fetching results. Please try again.");
   }
 });
@@ -59,3 +54,4 @@ function formatResults(results) {
     )
     .join("<br/><br/>");
 }
+
