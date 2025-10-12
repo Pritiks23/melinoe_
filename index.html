@@ -3,20 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Knowledge Chatbox</title>
+  <title>The Living Brain of AI Knowledge</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>🤖 AI Knowledge Chatbox</h1>
-    <div id="chatbox">
-      <div id="messages"></div>
-      <form id="chat-form">
-        <input type="text" id="user-input" placeholder="Ask about LLMs, RAG, embeddings..." required />
-        <button type="submit">Send</button>
-      </form>
+  <header>
+    <h1>The Living Brain of AI Knowledge</h1>
+    <p>Ask any AI engineering question — get verified, RAG-backed answers with code snippets, benchmarks, and references.</p>
+    <form id="chat-form">
+      <input type="text" id="user-input" placeholder="Ask about RAG, embeddings, agents..." required />
+      <button type="submit">Ask</button>
+    </form>
+  </header>
+
+  <section id="categories">
+    <h2>Explore Topics</h2>
+    <div class="grid">
+      <div>🧠 RAG</div>
+      <div>🔍 Embeddings</div>
+      <div>📦 Vector DBs</div>
+      <div>🛠 Fine-tuning</div>
+      <div>🧾 Prompt Engineering</div>
+      <div>📊 Model Selection</div>
+      <div>🛡️ AI Safety</div>
+      <div>🤖 AI Agents</div>
+      <div>👥 Multi-Agents</div>
+      <div>🎯 MDPs</div>
     </div>
-  </div>
+  </section>
+
+  <section id="chatbox">
+    <h2>Answers</h2>
+    <div id="messages"></div>
+  </section>
+
   <script src="script.js"></script>
 </body>
 </html>
