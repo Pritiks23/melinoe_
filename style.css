@@ -1,8 +1,8 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at center, #1f2633, #0f1117);
-  color: #e0e0e0;
+  background: #000000;
+  color: #ffffff;
   overflow-x: hidden;
 }
 
