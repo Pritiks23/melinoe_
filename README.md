@@ -1,11 +1,11 @@
-# 🧠 The Ultimate AI Knowledge Base
+#  The Ultimate AI Knowledge Base
 **Centralized. Verified. RAG-Driven.**
 
 > “Ask any AI engineering question — get a verified, RAG-backed answer with code snippets, benchmarks, and references — instantly.”
 
 ---
 
-## 🚀 Overview
+## Overview
 
 The **Ultimate AI Knowledge Base** is a centralized, Retrieval-Augmented Generation (RAG)-powered platform built to solve one of the biggest pain points in modern AI engineering:
 
@@ -21,7 +21,7 @@ This project unifies them into a **community-driven, LLM-verified, ever-evolving
 
 ---
 
-## 💡 Vision
+##  Vision
 
 > “The living brain of AI knowledge — centralized, RAG-driven, and always up to date.”
 
@@ -37,7 +37,7 @@ Imagine a Stack Overflow meets Perplexity meets Hugging Face — but purpose-bui
 
 ---
 
-## 🧩 Core Features (Planned)
+##  Core Features (Planned)
 
 | Feature | Description |
 |----------|--------------|
