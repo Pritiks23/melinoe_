@@ -7,28 +7,32 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="background-animation"></div>
+
   <header>
-    <h1>The Living Brain of AI Knowledge</h1>
-    <p>Ask any AI engineering question — get verified, RAG-backed answers with code snippets, benchmarks, and references.</p>
+    <h1>The Living Brain of <span>AI Knowledge</span></h1>
+    <p>Ask any AI engineering question — get verified, RAG-backed answers with code snippets, benchmarks, and references — instantly.</p>
     <form id="chat-form">
-      <input type="text" id="user-input" placeholder="Ask about RAG, embeddings, agents..." required />
-      <button type="submit">Ask</button>
+      <input type="text" id="user-input" placeholder="Ask any AI engineering question..." required />
+      <button type="submit">Search</button>
     </form>
+    <a href="#categories" class="browse-button">Browse Questions ↓</a>
   </header>
 
   <section id="categories">
-    <h2>Explore Topics</h2>
+    <h2>Explore by Category</h2>
+    <p>Dive deep into specialized AI/ML topics</p>
     <div class="grid">
-      <div>🧠 RAG</div>
-      <div>🔍 Embeddings</div>
-      <div>📦 Vector DBs</div>
-      <div>🛠 Fine-tuning</div>
-      <div>🧾 Prompt Engineering</div>
-      <div>📊 Model Selection</div>
-      <div>🛡️ AI Safety</div>
-      <div>🤖 AI Agents</div>
-      <div>👥 Multi-Agents</div>
-      <div>🎯 MDPs</div>
+      <a href="guides/rag.html" class="card"><h3>RAG</h3><p>Retrieval-Augmented Generation</p></a>
+      <a href="guides/embeddings.html" class="card"><h3>Embeddings</h3><p>Vector representations & models</p></a>
+      <a href="guides/vector-dbs.html" class="card"><h3>Vector Databases</h3><p>Pinecone, Weaviate, Chroma</p></a>
+      <a href="guides/fine-tuning.html" class="card"><h3>Fine-tuning</h3><p>Model customization</p></a>
+      <a href="guides/prompt-engineering.html" class="card"><h3>Prompt Engineering</h3><p>Effective prompting techniques</p></a>
+      <a href="guides/model-selection.html" class="card"><h3>Model Selection</h3><p>Choosing the right LLM</p></a>
+      <a href="guides/ai-safety.html" class="card"><h3>AI Safety</h3><p>Alignment & safety practices</p></a>
+      <a href="guides/ai-agents.html" class="card"><h3>AI Agents</h3><p>Autonomous AI systems</p></a>
+      <a href="guides/multi-agents.html" class="card"><h3>Multi-Agents</h3><p>Cooperative agent systems</p></a>
+      <a href="guides/mdps.html" class="card"><h3>MDPs</h3><p>Markov Decision Processes</p></a>
     </div>
   </section>
 
@@ -40,3 +44,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
