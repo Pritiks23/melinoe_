@@ -163,9 +163,10 @@ button:hover {
 }
 
 .logo {
-  width: 120px;
-  height: auto;
-  margin-bottom: 0.5rem;
+  height: 1in; /* About one inch tall */
+  width: auto;
+  display: block;
+  margin: 0 auto 0.5rem auto;
 }
 
 /* Company name styling */
