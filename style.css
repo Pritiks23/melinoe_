@@ -192,3 +192,48 @@ button:hover {
   pointer-events: none;
 }
 
+/*new*/
+#chat-input-box {
+  background-color: #000000;     /* black background */
+  border: 2px solid #00bfff;     /* blue border */
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  display: flex;
+  justify-content: center;
+}
+
+#chat-form {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+#user-input {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #00bfff;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 1em;
+  flex: 1;
+}
+
+#user-input::placeholder {
+  color: #888;
+}
+
+button {
+  background-color: #00bfff;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  padding: 12px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0099cc;
+}
