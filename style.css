@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Roboto Mono', sans-serif;
   background: #000000;
   color: #ffffff;
   overflow-x: hidden;
@@ -175,7 +175,7 @@ button:hover {
   color: #32CD32; /* Bright green */
   font-weight: bold;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Roboto Mono', sans-serif;
 }
 
 #constellation {
