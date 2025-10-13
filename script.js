@@ -76,7 +76,7 @@ class Star {
     this.y = Math.random() * canvas.height;
     this.vx = (Math.random() - 0.5) * 0.3;
     this.vy = (Math.random() - 0.5) * 0.3;
-    this.radius = Math.random() * 3 + 1.5;
+    this.radius = Math.random() * 2.5 + 1.5;
 
   }
 
