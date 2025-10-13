@@ -136,13 +136,15 @@ button:hover {
 }
 
 #messages {
-  background-color: #1a1c23;
+  background-color: #000000;       /* pure black background */
+  color: #ffffff;                  /* white text inside */
+  border: 2px solid #00bfff;       /* bright blue border */
   border-radius: 8px;
   padding: 20px;
   height: 400px;
   overflow-y: auto;
-  border: 1px solid #333;
 }
+
 
 .message {
   margin-bottom: 15px;
