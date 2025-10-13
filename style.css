@@ -125,15 +125,11 @@ button:hover {
 }
 
 #chatbox {
-  background-color: #000000;     /* black background */
-  color: #ffffff;                /* white text */
-  border: 2px solid #00bfff;     /* bright blue border */
   padding: 40px 20px;
   max-width: 800px;
   margin: auto;
-  border-radius: 10px;           /* optional: smooth corners */
-  box-shadow: 0 0 10px rgba(0,191,255,0.2); /* optional: subtle glow */
 }
+
 
 
 #chatbox h2 {
