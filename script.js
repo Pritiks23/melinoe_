@@ -105,8 +105,10 @@ function connectStars() {
         ctx.beginPath();
         ctx.moveTo(stars[i].x, stars[i].y);
         ctx.lineTo(stars[j].x, stars[j].y);
-        ctx.strokeStyle = 'rgba(0, 150, 255, 0.2)';
+        ctx.lineWidth = 1.2; // Thicker lines
+        ctx.strokeStyle = 'rgba(0, 150, 255, 0.4)'; // More visible
         ctx.stroke();
+
       }
     }
   }
