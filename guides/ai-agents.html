@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>AI Agents Guide</title><link rel="stylesheet" href="../style.css" /></head>
 <body><div class="background-animation"></div><header><h1>AI Agents</h1><p>Autonomous systems using tools, memory, and reasoning.</p></header>
@@ -10,4 +10,87 @@
   <h2>CrewAI</h2>
   <p>Multi-agent orchestration with roles and collaboration.</p>
   <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
-</main></body></html>
+</main></body></html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Agents Deep Dive</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="background-animation" aria-hidden="true"></div>
+
+  <header>
+    <h1>AI Agents</h1>
+    <p>Advanced autonomous AI systems for multi-step reasoning, orchestration, and tool integration.</p>
+  </header>
+
+  <main style="padding: 40px; max-width: 900px; margin: auto;">
+    
+    <section>
+      <h2>LangChain Agents</h2>
+      <p>
+        LangChain agents are modular, LLM-driven systems designed for complex workflows requiring memory, reasoning, and tool orchestration. 
+        Architecturally, they combine <strong>chains</strong> (for sequential reasoning steps), <strong>agents</strong> (decision-making modules), and <strong>toolkits</strong> (APIs, databases, or custom code). 
+        They maintain context across interactions using structured memory objects such as <em>vector stores</em> or <em>conversation buffers</em>.
+      </p>
+      <p>
+        <strong>Prompting strategy:</strong> Uses dynamic prompt templates that adapt based on tool output, user input, and previous reasoning steps. 
+        <strong>Strengths:</strong> High modularity, extensibility, easy integration with external data sources. 
+        <strong>Limitations:</strong> Sensitive to prompt design and requires careful memory management to prevent context drift in long-running tasks.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Automated knowledge retrieval, report generation, multi-API orchestration, and interactive assistants with context-aware reasoning.
+      </p>
+    </section>
+
+    <section>
+      <h2>AutoGPT</h2>
+      <p>
+        AutoGPT is a fully autonomous, goal-driven agent capable of self-prompting, iterative reasoning, and task decomposition. 
+        The architecture relies on a looped feedback mechanism where the agent:
+        <ol>
+          <li>Generates a task list from a high-level goal.</li>
+          <li>Executes subtasks using connected tools or APIs.</li>
+          <li>Evaluates outcomes, updates context, and plans next steps.</li>
+        </ol>
+      </p>
+      <p>
+        <strong>Prompting strategy:</strong> Multi-layered self-prompting with recursive refinement, allowing the agent to adjust instructions based on partial results. 
+        <strong>Strengths:</strong> Handles open-ended goals, autonomous reasoning, minimal human supervision. 
+        <strong>Limitations:</strong> Can propagate errors across iterations if feedback evaluation is weak; requires careful control of resource usage and API limits.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Continuous content generation, autonomous process automation, AI-driven research pipelines, and exploratory problem-solving in dynamic environments.
+      </p>
+    </section>
+
+    <section>
+      <h2>CrewAI</h2>
+      <p>
+        CrewAI is a multi-agent orchestration framework enabling concurrent, role-based collaboration among autonomous agents. 
+        Each agent is specialized (e.g., data processing, planning, reasoning) and communicates via an internal messaging protocol or shared memory. 
+        The framework supports dynamic task allocation, parallel execution, and collective decision-making.
+      </p>
+      <p>
+        <strong>Prompting strategy:</strong> Role-specific prompts that define capabilities and responsibilities, combined with coordination messages to synchronize agents. 
+        <strong>Strengths:</strong> High scalability, robust collaboration, optimized for complex multi-agent workflows. 
+        <strong>Limitations:</strong> Increased complexity in debugging, potential for deadlocks, and requires orchestration logic to prevent task collisions.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Distributed AI simulations, large-scale automation, multi-step decision-making pipelines, and coordinated research or analysis tasks.
+      </p>
+    </section>
+
+    <nav>
+      <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
+    </nav>
+  </main>
+
+  <footer style="text-align:center; padding:20px 0; color:#888;">
+    <p>&copy; 2025 AI Agents Deep Dive</p>
+  </footer>
+</body>
+</html>
