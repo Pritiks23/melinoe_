@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Vector Databases Guide</title><link rel="stylesheet" href="../style.css" /></head>
 <body><div class="background-animation"></div><header><h1>Vector Databases</h1><p>Pinecone, Weaviate, ChromaDB — storing and searching embeddings.</p></header>
@@ -14,4 +14,80 @@
   <h2>Indexing Strategies</h2>
   <p>Use flat, IVF, HNSW, or PQ depending on speed vs accuracy tradeoffs.</p>
   <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
-</main></body></html>
+</main></body></html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vector Databases Deep Dive</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="background-animation" aria-hidden="true"></div>
+
+  <header>
+    <h1>Vector Databases</h1>
+    <p>Storing, indexing, and searching high-dimensional embeddings for RAG and AI applications.</p>
+  </header>
+
+  <main style="padding: 40px; max-width: 900px; margin: auto;">
+
+    <section>
+      <h2>What Are Vector Databases?</h2>
+      <p>
+        Vector databases store embeddings as high-dimensional vectors and enable efficient similarity search using metrics such as cosine similarity, dot product, or Euclidean distance. 
+        They are critical for Retrieval-Augmented Generation (RAG), semantic search, recommendation systems, and clustering pipelines.
+      </p>
+      <p>
+        <strong>Core Features:</strong> Fast nearest-neighbor search, scalability for millions to billions of vectors, and support for hybrid queries combining embeddings and metadata filters.
+      </p>
+    </section>
+
+    <section>
+      <h2>Popular Tools</h2>
+      <ul>
+        <li><strong>FAISS:</strong> Facebook AI Similarity Search — highly optimized, flexible, supports GPU acceleration and multiple indexing strategies.</li>
+        <li><strong>Weaviate:</strong> Schema-aware, hybrid search combining vectors with traditional filters, supports multi-modal data.</li>
+        <li><strong>ChromaDB:</strong> Lightweight, open-source, easy to integrate with RAG pipelines and local development environments.</li>
+        <li><strong>Pinecone:</strong> Fully managed, scalable, production-ready vector DB with real-time updates and monitoring.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Indexing Strategies</h2>
+      <p>
+        Choose an indexing strategy based on dataset size, accuracy, and latency requirements:
+        <ul>
+          <li><strong>Flat:</strong> Exact search, high accuracy, slower on large datasets.</li>
+          <li><strong>IVF (Inverted File):</strong> Partitions vectors to speed up search; balances accuracy and efficiency.</li>
+          <li><strong>HNSW (Hierarchical Navigable Small World):</strong> Graph-based approximate nearest neighbor search, extremely fast for large datasets.</li>
+          <li><strong>PQ (Product Quantization):</strong> Compresses vectors to reduce memory footprint, trading off some accuracy for efficiency.</li>
+        </ul>
+      </p>
+      <p>
+        For production pipelines, hybrid strategies combining HNSW with IVF or PQ are common to achieve low-latency, high-accuracy search at scale.
+      </p>
+    </section>
+
+    <section>
+      <h2>Best Practices</h2>
+      <ul>
+        <li>Normalize embeddings to unit length when using cosine similarity for consistent results.</li>
+        <li>Keep metadata for filtering and contextual queries alongside vectors.</li>
+        <li>Benchmark indexing strategies on realistic datasets before production deployment.</li>
+        <li>Use GPU acceleration for large-scale embeddings when possible.</li>
+        <li>Combine vector search with RAG frameworks like LangChain or LlamaIndex for robust retrieval pipelines.</li>
+      </ul>
+    </section>
+
+    <nav>
+      <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
+    </nav>
+  </main>
+
+  <footer style="text-align:center; padding:20px 0; color:#888;">
+    <p>&copy; 2025 Vector Databases Deep Dive</p>
+  </footer>
+</body>
+</html>
