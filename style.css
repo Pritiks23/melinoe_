@@ -3,7 +3,7 @@ body {
   margin: 0;
   font-family: 'Roboto Mono', monospace;
   background: url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg') center/cover no-repeat;
-  color: #ffffff;
+  color: #ffffff; /* all text white by default */
   overflow-x: hidden;
 }
 
@@ -11,20 +11,21 @@ body {
 header {
   text-align: center;
   padding: 60px 20px;
+  color: #ffffff; /* force all header text white */
 }
 
 header h1 {
   font-size: 3em;
-  color: white;
+  color: #ffffff; /* main heading white */
 }
 
 header h1 span {
-  color: #00bfff;
+  color: #00bfff; /* keep span blue */
 }
 
 header p {
   font-size: 1.2em;
-  color: #ccc;
+  color: #ffffff; /* header paragraph white */
   margin-bottom: 30px;
 }
 
@@ -78,7 +79,7 @@ button:hover {
 .browse-button {
   display: inline-block;
   margin-top: 10px;
-  color: #00bfff;
+  color: #ffffff; /* white text */
   font-weight: bold;
   text-decoration: none;
 }
@@ -87,15 +88,16 @@ button:hover {
 #categories {
   padding: 40px 20px;
   text-align: center;
+  color: #ffffff; /* section text white */
 }
 
 #categories h2 {
   font-size: 2em;
-  color: white;
+  color: #ffffff;
 }
 
 #categories p {
-  color: #aaa;
+  color: #ffffff;
   margin-bottom: 30px;
 }
 
@@ -106,7 +108,7 @@ button:hover {
   padding: 0 10%;
 }
 
-/* Cards */
+/* Cards remain unchanged */
 .card {
   background-color: rgba(31, 38, 51, 0.85);
   padding: 30px;
@@ -139,10 +141,11 @@ button:hover {
   padding: 40px 20px;
   max-width: 800px;
   margin: auto;
+  color: #ffffff; /* ensure chatbox headings white */
 }
 
 #chatbox h2 {
-  color: #00bfff;
+  color: #ffffff; /* make "Answers" heading white */
   margin-bottom: 10px;
 }
 
