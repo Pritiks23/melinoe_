@@ -38,11 +38,6 @@ header h1 span {
 header h1:hover {
   text-shadow: 0 0 25px rgba(0, 191, 255, 1), 0 0 60px rgba(0, 191, 255, 0.8);
 }
-#animated-title span {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  display: inline-block;
-}
 
 header p {
   font-size: 1.3em;
