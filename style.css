@@ -1,10 +1,32 @@
 /* General body styling */
+/* body {
+  margin: 0;
+  font-family: 'Roboto Mono', monospace;
+  background: url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg') center/cover no-repeat;
+  color: #ffffff; 
+  overflow-x: hidden;
+} */
+/* General body styling with animated background */
 body {
   margin: 0;
   font-family: 'Roboto Mono', monospace;
   background: url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg') center/cover no-repeat;
-  color: #ffffff; /* all text white by default */
+  color: #ffffff;
   overflow-x: hidden;
+  animation: moveBackground 80s linear infinite; /* 👈 animation added */
+}
+
+/* Keyframes for smooth background drift */
+@keyframes moveBackground {
+  0% {
+    background-position: center 0;
+  }
+  50% {
+    background-position: center 100px;
+  }
+  100% {
+    background-position: center 0;
+  }
 }
 
 /* Header styling */
