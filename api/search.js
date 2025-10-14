@@ -8,7 +8,13 @@ export default async function handler(req, res) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${TAVILY_API_KEY}`,
     },
-    body: JSON.stringify({ query, max_results: 5 }),
+    // body: JSON.stringify({ query, max_results: 5 }),
+    body: JSON.stringify({
+  query,
+  max_results: 8,          // get more results
+  include_answer: true,    // Tavily will try to include an AI-summarized answer
+  search_depth: "advanced" // more contextually deep search
+}),
   });
 
   const data = await response.json();
