@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Prompt Engineering Guide</title><link rel="stylesheet" href="../style.css" /></head>
 <body><div class="background-animation"></div><header><h1>Prompt Engineering</h1><p>Effective prompting techniques for better LLM outputs.</p></header>
@@ -10,4 +10,91 @@
   <h2>Prompt Injection</h2>
   <p>A security concern where malicious input overrides intended instructions.</p>
   <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
-</main></body></html>
+</main></body></html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model Selection Deep Dive</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="background-animation" aria-hidden="true"></div>
+
+  <header>
+    <h1>Model Selection</h1>
+    <p>Comprehensive guidelines for selecting the optimal LLM based on task type, scale, and deployment constraints.</p>
+  </header>
+
+  <main style="padding: 40px; max-width: 900px; margin: auto;">
+
+    <section>
+      <h2>Popular Models</h2>
+      <ul>
+        <li>
+          <strong>Mistral & Mixtral:</strong> Open-weight, efficient transformer models designed for high inference speed and customizable deployment. Suitable for fine-tuning, multi-task experiments, and on-premises applications.
+        </li>
+        <li>
+          <strong>GPT-4:</strong> Proprietary, state-of-the-art model with exceptional reasoning, generalization, and instruction-following. Best for high-accuracy, mission-critical tasks where latency and cost are secondary.
+        </li>
+        <li>
+          <strong>Claude:</strong> Safety-focused LLM optimized for alignment, ethical reasoning, and structured outputs. Ideal for sensitive deployments where regulatory or ethical constraints are strict.
+        </li>
+        <li>
+          <strong>LLaMA & LLaMA-2:</strong> Open-source family optimized for research and low-cost fine-tuning. Scales from smaller models for edge tasks to large models for multi-domain reasoning.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Architecture & Scalability</h2>
+      <p>
+        Consider transformer depth, hidden dimensions, attention mechanisms, and parameter count when selecting a model. Larger models offer better generalization but incur higher latency and memory usage. 
+        Evaluate trade-offs between:
+        <ul>
+          <li>Model size vs. inference speed</li>
+          <li>Pre-trained capabilities vs. fine-tuning efficiency</li>
+          <li>Open-weight flexibility vs. proprietary support</li>
+        </ul>
+      </p>
+    </section>
+
+    <section>
+      <h2>Benchmarking & Evaluation</h2>
+      <p>
+        Use multi-dimensional evaluation to assess suitability:
+        <ul>
+          <li><strong>MMLU:</strong> Multitask language understanding benchmark.</li>
+          <li><strong>GSM8K:</strong> Grade school math reasoning benchmark.</li>
+          <li><strong>HumanEval:</strong> Code generation and logical reasoning tasks.</li>
+          <li><strong>ARC:</strong> Scientific reasoning and problem-solving challenge.</li>
+          <li><strong>Latency & Memory Profiling:</strong> Test real-world performance under deployment conditions.</li>
+        </ul>
+      </p>
+      <p>
+        <strong>Deployment considerations:</strong> Open-weight models (Mistral, LLaMA) allow flexible fine-tuning and low-cost scaling, while proprietary models (GPT-4, Claude) provide robust general-purpose performance and high alignment guarantees. Consider inference infrastructure, quantization options, and redundancy for production readiness.
+      </p>
+    </section>
+
+    <section>
+      <h2>Advanced Tips for Professional Developers</h2>
+      <ul>
+        <li>Use mixed-precision or quantization to reduce memory footprint without sacrificing accuracy.</li>
+        <li>Benchmark multiple models for your specific dataset, not just public metrics.</li>
+        <li>Leverage adapters like LoRA/QLoRA for task-specific tuning on large models.</li>
+        <li>Monitor for alignment, fairness, and robustness when deploying to production.</li>
+        <li>Consider hybrid approaches: use smaller local models for pre-filtering or retrieval-augmented tasks, and large proprietary models for critical reasoning steps.</li>
+      </ul>
+    </section>
+
+    <nav>
+      <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
+    </nav>
+  </main>
+
+  <footer style="text-align:center; padding:20px 0; color:#888;">
+    <p>&copy; 2025 Model Selection Deep Dive</p>
+  </footer>
+</body>
+</html>
