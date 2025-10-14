@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Model Selection Guide</title><link rel="stylesheet" href="../style.css" /></head>
 <body><div class="background-animation"></div><header><h1>Model Selection</h1><p>Choosing the right LLM for your task and constraints.</p></header>
@@ -12,4 +12,64 @@
   <h2>Benchmarks</h2>
   <p>Use MMLU, GSM8K, HumanEval, and ARC to compare performance.</p>
   <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
-</main></body></html>
+</main></body></html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model Selection Deep Dive</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="background-animation" aria-hidden="true"></div>
+
+  <header>
+    <h1>Model Selection</h1>
+    <p>Guidelines for selecting the right LLM based on task requirements, performance, and constraints.</p>
+  </header>
+
+  <main style="padding: 40px; max-width: 900px; margin: auto;">
+
+    <section>
+      <h2>Popular Models</h2>
+      <ul>
+        <li>
+          <strong>Mistral & Mixtral:</strong> Open-weight models optimized for efficiency and inference speed. Ideal for developers needing customizable, high-performance LLMs on accessible hardware.
+        </li>
+        <li>
+          <strong>GPT-4:</strong> Proprietary model with strong reasoning, broad generalization, and state-of-the-art capabilities. Best for high-accuracy, mission-critical tasks where cost is secondary.
+        </li>
+        <li>
+          <strong>Claude:</strong> Optimized for safe reasoning, alignment, and structured outputs. Suitable for applications requiring ethical AI behavior and sensitive content handling.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Benchmarking & Evaluation</h2>
+      <p>
+        Performance should be evaluated across multiple metrics and datasets:  
+        <ul>
+          <li><strong>MMLU:</strong> Multitask language understanding benchmark.</li>
+          <li><strong>GSM8K:</strong> Grade school math reasoning benchmark for numerical problem-solving.</li>
+          <li><strong>HumanEval:</strong> Code generation and reasoning tasks.</li>
+          <li><strong>ARC:</strong> AI reasoning challenge for scientific problem-solving.</li>
+        </ul>
+        Consider metrics like accuracy, reasoning fidelity, latency, memory footprint, and robustness under adversarial or out-of-distribution inputs.
+      </p>
+      <p>
+        <strong>Deployment considerations:</strong> Choose models balancing inference cost, latency, and task-critical performance. Open-weight models (like Mistral) are better for fine-tuning and low-cost deployment, while GPT-4 and Claude excel in general-purpose, high-accuracy scenarios.
+      </p>
+    </section>
+
+    <nav>
+      <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
+    </nav>
+  </main>
+
+  <footer style="text-align:center; padding:20px 0; color:#888;">
+    <p>&copy; 2025 Model Selection Deep Dive</p>
+  </footer>
+</body>
+</html>
