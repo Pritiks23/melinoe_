@@ -1,8 +1,9 @@
+
 /* General body styling */
 body {
   margin: 0;
   font-family: 'Roboto Mono', monospace;
-  background: url('images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg') center/cover no-repeat;
+  background: url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001661/GSFC_20171208_Archive_e001661~orig.jpg') center/cover no-repeat;
   color: #ffffff;
   overflow-x: hidden;
 }
