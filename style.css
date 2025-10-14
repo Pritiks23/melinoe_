@@ -1,258 +1,110 @@
-/* ------------------------------
-   Font Imports
---------------------------------*/
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@600&display=swap');
-
-/* ------------------------------
-   Body + Background
---------------------------------*/
+/* General body styling with vibrant animated background */
 body {
   margin: 0;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg') center/cover no-repeat;
+  font-family: 'Poppins', 'Roboto Mono', monospace;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), /* slight dark tint for contrast */
+    url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg') 
+    center/cover no-repeat;
   color: #ffffff;
   overflow-x: hidden;
-  animation: moveBackground 8s linear infinite;
-  position: relative;
+  animation: moveBackground 15s linear infinite;
 }
 
-/* Add gradient overlay for cinematic depth */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.85));
-  z-index: -1;
-}
-
-/* Background animation */
+/* Gentle motion to keep it alive */
 @keyframes moveBackground {
   0% { background-position: center 0; }
-  50% { background-position: center 120px; }
+  50% { background-position: center 80px; }
   100% { background-position: center 0; }
 }
 
-/* ------------------------------
-   Header
---------------------------------*/
+/* Header */
 header {
   text-align: center;
-  padding: 80px 20px 60px;
-  color: #ffffff;
+  padding: 60px 20px;
 }
 
 header h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 3.5em;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-  animation: fadeIn 2s ease;
+  font-size: 3em;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255,165,0,0.8), 0 0 40px rgba(255,140,0,0.4);
 }
 
 header h1 span {
-  color: #00bfff;
+  color: #ffae42; /* warm orange-gold accent */
 }
 
 header p {
   font-size: 1.2em;
-  color: #cccccc;
-  font-weight: 300;
-  margin-bottom: 40px;
-  line-height: 1.5;
+  color: #f8f8f8;
+  text-shadow: 0 0 10px rgba(255,140,0,0.6);
 }
 
-/* Fade-in animation for elegance */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ------------------------------
-   Chat Input
---------------------------------*/
+/* Chat input form */
 #chat-input-box {
-  background-color: rgba(0, 0, 0, 0.75);
-  border: 1.5px solid #00bfff;
-  border-radius: 12px;
-  padding: 24px;
-  max-width: 720px;
-  margin: 0 auto 60px;
+  background-color: rgba(0, 0, 0, 0.65);
+  border: 2px solid #ffae42;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto 40px auto;
   display: flex;
   justify-content: center;
-  transition: box-shadow 0.4s ease;
-}
-
-#chat-form {
-  width: 100%;
-  display: flex;
-  gap: 10px;
 }
 
 #user-input {
-  background-color: #000;
-  color: #fff;
-  border: 1px solid #00bfff;
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #ffae42;
   border-radius: 6px;
-  padding: 14px;
+  padding: 12px;
   font-size: 1em;
   flex: 1;
-  transition: all 0.3s ease;
-}
-
-#user-input:focus {
-  outline: none;
-  box-shadow: 0 0 10px #00bfff;
-  border-color: #00bfff;
-}
-
-#user-input::placeholder {
-  color: #777;
 }
 
 button {
-  background-color: #00bfff;
+  background-color: #ffae42;
   border: none;
   border-radius: 6px;
-  color: #fff;
-  font-weight: 600;
-  padding: 12px 24px;
+  color: #000;
+  font-weight: bold;
+  padding: 12px 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background-color: #0099cc;
-  transform: translateY(-2px);
+  background-color: #ff7b00;
+  color: #fff;
 }
 
-/* ------------------------------
-   Browse Button
---------------------------------*/
-.browse-button {
-  display: inline-block;
-  margin-top: 20px;
-  color: #ffffff;
-  font-weight: 600;
-  text-decoration: none;
-  letter-spacing: 0.3px;
-  transition: opacity 0.3s ease;
-}
-
-.browse-button:hover {
-  opacity: 0.8;
-}
-
-/* ------------------------------
-   Categories
---------------------------------*/
-#categories {
-  padding: 80px 20px;
-  text-align: center;
-  color: #ffffff;
-}
-
-#categories h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.3em;
-  color: #ffffff;
-  margin-bottom: 10px;
-}
-
-#categories p {
-  color: #cccccc;
-  margin-bottom: 40px;
-  font-weight: 300;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  padding: 0 10%;
-}
-
-/* ------------------------------
-   Cards
---------------------------------*/
+/* Cards stay as-is */
 .card {
   background-color: rgba(31, 38, 51, 0.85);
-  padding: 36px;
-  border-radius: 16px;
-  text-align: left;
-  text-decoration: none;
-  color: white;
-  box-shadow: 0 0 10px rgba(0,191,255,0.15);
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid rgba(255,165,0,0.3);
+  box-shadow: 0 0 10px rgba(255,165,0,0.25);
 }
 
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 20px rgba(0,191,255,0.4);
-}
-
-.card h3 {
-  margin: 0 0 12px;
-  font-size: 1.5em;
-  color: #00bfff;
-  letter-spacing: 0.5px;
-}
-
-.card p {
-  margin: 0;
-  color: #ccc;
-  line-height: 1.4;
-}
-
-/* ------------------------------
-   Chatbox
---------------------------------*/
-#chatbox {
-  padding: 60px 20px;
-  max-width: 800px;
-  margin: auto;
-  color: #ffffff;
-}
-
-#chatbox h2 {
-  font-size: 1.8em;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 15px;
-}
-
-#messages {
-  background-color: rgba(0, 0, 0, 0.75);
-  color: #ffffff;
-  border: 1.5px solid #00bfff;
-  border-radius: 10px;
-  padding: 24px;
-  height: 400px;
-  overflow-y: auto;
-}
-
-/* ------------------------------
-   Branding
---------------------------------*/
+/* Branding section */
 .branding {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .logo {
-  height: 1.4in;
+  height: 1.8in;
   width: auto;
   display: block;
-  margin: 0 auto 0.8rem auto;
+  margin: 0 auto 0.5rem auto;
+  filter: drop-shadow(0 0 20px rgba(255,165,0,0.5));
 }
 
 .company-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 3.2rem;
-  color: #ffffff;
-  font-weight: 600;
+  font-size: 3rem;
+  color: #ffae42;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(255,140,0,0.7);
   margin: 0;
-  letter-spacing: 0.6px;
-  animation: fadeIn 2s ease;
+  font-family: 'Poppins', sans-serif;
 }
 
