@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>AI Safety Guide</title><link rel="stylesheet" href="../style.css" /></head>
 <body><div class="background-animation"></div><header><h1>AI Safety</h1><p>Alignment, red-teaming, and bias mitigation strategies.</p></header>
@@ -10,4 +10,81 @@
   <h2>Alignment</h2>
   <p>Ensuring models behave as intended and respect human values.</p>
   <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
-</main></body></html>
+</main></body></html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Safety Deep Dive</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="background-animation" aria-hidden="true"></div>
+
+  <header>
+    <h1>AI Safety</h1>
+    <p>Advanced strategies for alignment, red-teaming, and bias mitigation in AI systems.</p>
+  </header>
+
+  <main style="padding: 40px; max-width: 900px; margin: auto;">
+    
+    <section>
+      <h2>Red-Teaming</h2>
+      <p>
+        Red-teaming involves systematically testing AI models against adversarial inputs to identify vulnerabilities, failure modes, and unsafe behaviors. 
+        It can include prompt injection, scenario stress-testing, and edge-case simulations. Architecturally, this may involve sandboxed evaluation environments, logging modules, and automated attack scripts.
+      </p>
+      <p>
+        <strong>Techniques:</strong> Fuzzing, adversarial prompt generation, simulated multi-step attacks. 
+        <strong>Strengths:</strong> Detects blind spots, improves model robustness, and informs safety guardrails. 
+        <strong>Limitations:</strong> Cannot cover all potential adversarial scenarios, requires domain expertise to design effective tests, and may miss emergent behaviors in production.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Identifying unsafe completions in chatbots, testing reasoning agents, and validating high-stakes AI systems (finance, healthcare, autonomous systems).
+      </p>
+    </section>
+
+    <section>
+      <h2>Bias Mitigation</h2>
+      <p>
+        Bias mitigation addresses unfair or harmful model outputs by adjusting training data, model architecture, or post-processing logic. 
+        Approaches include re-weighting datasets, adversarial debiasing, constrained decoding, and embedding space regularization. 
+        Monitoring metrics like demographic parity, equal opportunity, and representation fairness is critical for evaluation.
+      </p>
+      <p>
+        <strong>Techniques:</strong> Pre-processing (data curation), in-processing (loss function constraints), post-processing (output adjustments). 
+        <strong>Strengths:</strong> Reduces systemic harms, improves trustworthiness, supports regulatory compliance. 
+        <strong>Limitations:</strong> May reduce model performance, cannot eliminate all biases, and requires continuous monitoring as data evolves.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Language models generating inclusive content, recommendation systems avoiding stereotype propagation, and fairness-aware decision-making systems.
+      </p>
+    </section>
+
+    <section>
+      <h2>Alignment</h2>
+      <p>
+        Alignment ensures AI systems act according to intended objectives and human values. Architecturally, alignment often involves reinforcement learning with human feedback (RLHF), reward modeling, or rule-based constraints integrated into the inference pipeline. 
+        Key challenges include value specification, reward hacking, and maintaining alignment during iterative updates.
+      </p>
+      <p>
+        <strong>Techniques:</strong> RLHF, rule-constrained inference, constitutional AI, scalable oversight. 
+        <strong>Strengths:</strong> Promotes safe autonomous behaviors, reduces unintended actions, and enhances trust in AI deployment. 
+        <strong>Limitations:</strong> Alignment is not guaranteed for out-of-distribution tasks, requires significant human supervision, and may conflict with task efficiency.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Chatbots following ethical guidelines, autonomous agents respecting safety protocols, and mission-critical AI systems in regulated industries.
+      </p>
+    </section>
+
+    <nav>
+      <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
+    </nav>
+  </main>
+
+  <footer style="text-align:center; padding:20px 0; color:#888;">
+    <p>&copy; 2025 AI Safety Deep Dive</p>
+  </footer>
+</body>
+</html>
