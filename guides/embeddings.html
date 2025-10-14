@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Embeddings Guide</title><link rel="stylesheet" href="../style.css" /></head>
 <body><div class="background-animation"></div><header><h1>Embeddings</h1><p>Vector representations & models for semantic understanding.</p></header>
@@ -13,4 +13,81 @@
     <li><strong>E5:</strong> Embedding for Everything Everywhere — versatile and performant.</li>
   </ul>
   <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
-</main></body></html>
+</main></body></html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embeddings Deep Dive</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="background-animation" aria-hidden="true"></div>
+
+  <header>
+    <h1>Embeddings</h1>
+    <p>High-dimensional vector representations for semantic understanding, search, and reasoning.</p>
+  </header>
+
+  <main style="padding: 40px; max-width: 900px; margin: auto;">
+    
+    <section>
+      <h2>What Are Embeddings?</h2>
+      <p>
+        Embeddings are numerical vector representations of words, sentences, or documents that capture semantic meaning in high-dimensional space. 
+        They allow AI systems to quantify similarity, perform clustering, and enable nearest-neighbor retrieval. 
+        Modern embeddings can be context-aware (like transformer-based models) or static (like Word2Vec or GloVe).
+      </p>
+      <p>
+        <strong>Architecture:</strong> Contextual embeddings use transformer encoders to map sequences into vectors, preserving semantic relations across token positions. 
+        Static embeddings rely on pre-trained lookup tables.
+      </p>
+      <p>
+        <strong>Strengths:</strong> Enable semantic search, clustering, classification, and recommendation. 
+        <strong>Limitations:</strong> High-dimensional vectors increase memory requirements, and embeddings may reflect biases present in training data.
+      </p>
+    </section>
+
+    <section>
+      <h2>Similarity Measures</h2>
+      <p>
+        Embeddings are compared using distance or similarity metrics. The most common is <strong>cosine similarity</strong>, which measures the angle between two vectors:
+      </p>
+      <pre>similarity = (A · B) / (||A|| * ||B||)</pre>
+      <p>
+        Values closer to 1 indicate higher semantic similarity. Other metrics include Euclidean distance and Manhattan distance, depending on the task.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Semantic search, document clustering, recommendation engines, question-answer retrieval, and knowledge graph mapping.
+      </p>
+    </section>
+
+    <section>
+      <h2>Popular Embedding Models</h2>
+      <ul>
+        <li>
+          <strong>BGE (BAAI General Embedding):</strong> Optimized for semantic retrieval and ranking, high-dimensional vectors for precise nearest-neighbor search.
+        </li>
+        <li>
+          <strong>E5:</strong> “Embedding for Everything Everywhere” — versatile and performant, works well across multiple NLP tasks and multilingual corpora.
+        </li>
+        <li>
+          <strong>OpenAI text-embedding-3:</strong> Transformer-based embeddings optimized for similarity, clustering, and retrieval tasks.
+        </li>
+      </ul>
+      <p>
+        <strong>Evaluation:</strong> Embedding quality is often assessed using retrieval benchmarks, clustering metrics (like silhouette score), and downstream task performance.
+      </p>
+    </section>
+
+    <nav>
+      <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
+    </nav>
+  </main>
+
+  <footer style="text-align:center; padding:20px 0; color:#888;">
+    <p>&copy; 2025 Embeddings Deep Dive</p>
+  </footer>
+</body>
+</html>
