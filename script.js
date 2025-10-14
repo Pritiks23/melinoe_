@@ -128,3 +128,11 @@ for (let i = 0; i < numStars; i++) {
   stars.push(new Star());
 }
 animateConstellation();
+window.addEventListener('DOMContentLoaded', () => {
+  const spans = document.querySelectorAll('#animated-title span');
+  spans.forEach((span, index) => {
+    setTimeout(() => {
+      span.style.opacity = 1;
+    }, index * 500); // 500ms delay between each word
+  });
+});
