@@ -1,12 +1,13 @@
+/* General body styling */
 body {
   margin: 0;
-  font-family: 'Roboto Mono';
+  font-family: 'Roboto Mono', monospace;
   background: #000000;
   color: #ffffff;
   overflow-x: hidden;
 }
 
-
+/* Background animation */
 .background-animation {
   position: fixed;
   top: 0;
@@ -18,6 +19,7 @@ body {
   z-index: -1;
 }
 
+/* Header styling */
 header {
   text-align: center;
   padding: 60px 20px;
@@ -38,164 +40,10 @@ header p {
   margin-bottom: 30px;
 }
 
-form {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-input[type="text"] {
-  width: 50%;
-  padding: 12px;
-  border-radius: 6px;
-  border: none;
-  font-size: 1em;
-}
-
-button {
-  padding: 12px 20px;
-  background-color: #00bfff;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0099cc;
-}
-
-.browse-button {
-  display: inline-block;
-  margin-top: 10px;
-  color: #00bfff;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-#categories {
-  padding: 40px 20px;
-  text-align: center;
-}
-
-#categories h2 {
-  font-size: 2em;
-  color: white;
-}
-
-#categories p {
-  color: #aaa;
-  margin-bottom: 30px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  padding: 0 10%;
-}
-
-.card {
-  background-color: #1f2633;
-  padding: 30px;
-  border-radius: 12px;
-  text-align: left;
-  text-decoration: none;
-  color: white;
-  box-shadow: 0 0 10px rgba(0,191,255,0.2);
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 15px rgba(0,191,255,0.4);
-}
-
-.card h3 {
-  margin: 0 0 10px;
-  font-size: 1.5em;
-  color: #00bfff;
-}
-
-.card p {
-  margin: 0;
-  color: #ccc;
-}
-
-#chatbox {
-  padding: 40px 20px;
-  max-width: 800px;
-  margin: auto;
-}
-
-
-
-#chatbox h2 {
-  color: #00bfff;
-  margin-bottom: 10px;
-}
-
-#messages {
-  background-color: #000000;       /* pure black background */
-  color: #ffffff;                  /* white text inside */
-  border: 2px solid #00bfff;       /* bright blue border */
-  border-radius: 8px;
-  padding: 20px;
-  height: 400px;
-  overflow-y: auto;
-}
-
-
-.message {
-  margin-bottom: 15px;
-}
-
-.user {
-  color: #ffffff;
-  font-weight: bold;
-}
-
-.bot {
-  color: #00bfff;
-}
-/* Branding section at top of header */
-.branding {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.logo {
-  height: 1in; /* About one inch tall */
-  width: auto;
-  display: block;
-  margin: 0 auto 0.5rem auto;
-}
-
-/* Company name styling */
-.company-name {
-  font-size: 2.5rem;
-  color: #32CD32; /* Bright green */
-  font-weight: bold;
-  margin: 0;
-  font-family: 'Roboto Mono';
-}
-
-#constellation {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  pointer-events: none;
-}
-
-/*new*/
+/* Chat input form */
 #chat-input-box {
-  background-color: #000000;     /* black background */
-  border: 2px solid #00bfff;     /* blue border */
+  background-color: #000000;
+  border: 2px solid #00bfff;
   border-radius: 10px;
   padding: 20px;
   max-width: 800px;
@@ -236,4 +84,131 @@ button {
 
 button:hover {
   background-color: #0099cc;
+}
+
+/* Browse button */
+.browse-button {
+  display: inline-block;
+  margin-top: 10px;
+  color: #00bfff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Categories section */
+#categories {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+#categories h2 {
+  font-size: 2em;
+  color: white;
+}
+
+#categories p {
+  color: #aaa;
+  margin-bottom: 30px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 0 10%;
+}
+
+/* Cards */
+.card {
+  background-color: #1f2633;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: left;
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 0 10px rgba(0,191,255,0.2);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(0,191,255,0.4);
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 1.5em;
+  color: #00bfff;
+}
+
+.card p {
+  margin: 0;
+  color: #ccc;
+}
+
+/* Chatbox */
+#chatbox {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+#chatbox h2 {
+  color: #00bfff;
+  margin-bottom: 10px;
+}
+
+#messages {
+  background-color: #000000;
+  color: #ffffff;
+  border: 2px solid #00bfff;
+  border-radius: 8px;
+  padding: 20px;
+  height: 400px;
+  overflow-y: auto;
+}
+
+.message {
+  margin-bottom: 15px;
+}
+
+.user {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.bot {
+  color: #00bfff;
+}
+
+/* Branding section */
+.branding {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  height: 1in;
+  width: auto;
+  display: block;
+  margin: 0 auto 0.5rem auto;
+}
+
+.company-name {
+  font-size: 2.5rem;
+  color: #32CD32;
+  font-weight: bold;
+  margin: 0;
+  font-family: 'Roboto Mono';
+}
+
+/* Constellation canvas */
+#constellation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none;
 }
