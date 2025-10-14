@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -29,4 +29,79 @@
     <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
   </main>
 </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RAG Deep Dive</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="background-animation" aria-hidden="true"></div>
+
+  <header>
+    <h1>RAG: Retrieval-Augmented Generation</h1>
+    <p>Advanced guide to RAG — architecture, frameworks, use cases, and best practices for production.</p>
+  </header>
+
+  <main style="padding: 40px; max-width: 900px; margin: auto;">
+
+    <section>
+      <h2>What is RAG?</h2>
+      <p>
+        Retrieval-Augmented Generation (RAG) integrates external knowledge retrieval into generative models to produce accurate, grounded, and context-aware responses. 
+        The architecture typically consists of:
+      </p>
+      <ul>
+        <li><strong>Retriever:</strong> Encodes queries and searches a document corpus (e.g., embeddings + vector databases) for relevant context.</li>
+        <li><strong>Generator:</strong> A language model (LLM) conditioned on retrieved documents to generate answers or summaries.</li>
+        <li><strong>Optional Ranker:</strong> Scores retrieved passages to prioritize relevance and reduce hallucinations.</li>
+      </ul>
+      <p>
+        RAG is essential when up-to-date or domain-specific knowledge is required, or when working with large corpora that cannot fit into the LLM context window.
+      </p>
+    </section>
+
+    <section>
+      <h2>Popular Frameworks</h2>
+      <ul>
+        <li><strong>LangChain:</strong> Flexible orchestration of retrievers, vector stores, and LLMs with rich agent capabilities.</li>
+        <li><strong>LlamaIndex:</strong> Simplifies knowledge ingestion and query pipelines, optimized for structured and unstructured data.</li>
+        <li><strong>Haystack:</strong> Enterprise-grade framework with multiple retriever and reader implementations, scalable for production search and QA.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Best Practices</h2>
+      <ul>
+        <li>Use high-quality embeddings and a dense vector store for accurate retrieval.</li>
+        <li>Preprocess and normalize documents to improve relevance matching.</li>
+        <li>Incorporate ranking and filtering to minimize hallucinations.</li>
+        <li>Use hybrid retrieval (dense + sparse) when possible for performance and coverage.</li>
+        <li>Monitor latency and memory usage; consider caching frequently retrieved results.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Use Cases</h2>
+      <ul>
+        <li>Enterprise search over internal documentation or knowledge bases.</li>
+        <li>Customer support agents with context-aware responses.</li>
+        <li>Research assistants retrieving academic papers or technical manuals.</li>
+        <li>Domain-specific chatbots and personal knowledge assistants.</li>
+      </ul>
+    </section>
+
+    <nav>
+      <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
+    </nav>
+  </main>
+
+  <footer style="text-align:center; padding:20px 0; color:#888;">
+    <p>&copy; 2025 RAG Deep Dive</p>
+  </footer>
+</body>
 </html>
+
