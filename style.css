@@ -13,7 +13,7 @@ body {
   background: url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg') center/cover no-repeat;
   color: #ffffff;
   overflow-x: hidden;
-  animation: moveBackground 80s linear infinite; /* 👈 animation added */
+  animation: moveBackground 8s linear infinite; /* 👈 animation added */
 }
 
 /* Keyframes for smooth background drift */
