@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Fine-Tuning Guide</title><link rel="stylesheet" href="../style.css" /></head>
 <body><div class="background-animation"></div><header><h1>Fine-Tuning</h1><p>Model customization with LoRA, QLoRA, and full fine-tuning.</p></header>
@@ -10,4 +10,83 @@
   <h2>QLoRA</h2>
   <p>Quantized LoRA — enables fine-tuning large models on consumer hardware.</p>
   <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
-</main></body></html>
+</main></body></html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fine-Tuning Deep Dive</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="background-animation" aria-hidden="true"></div>
+
+  <header>
+    <h1>Fine-Tuning</h1>
+    <p>Customizing pre-trained models using Full Fine-Tuning, LoRA, and QLoRA for task-specific performance.</p>
+  </header>
+
+  <main style="padding: 40px; max-width: 900px; margin: auto;">
+    
+    <section>
+      <h2>Full Fine-Tuning</h2>
+      <p>
+        Full fine-tuning involves updating <strong>all weights</strong> of a pre-trained model on task-specific data. This approach enables maximum adaptability and performance but is computationally intensive and requires large labeled datasets.
+      </p>
+      <p>
+        <strong>Architecture:</strong> Standard transformer architectures (encoder, decoder, or encoder-decoder) are retrained end-to-end. Optimizers, learning rate schedules, and regularization must be carefully tuned to prevent catastrophic forgetting.
+      </p>
+      <p>
+        <strong>Strengths:</strong> Maximum task-specific performance; can adapt models to highly specialized domains.  
+        <strong>Limitations:</strong> High compute and memory requirements, slow training, and risk of overfitting with small datasets.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Domain-specific language models, specialized classification or generation tasks, and high-stakes applications where accuracy is critical.
+      </p>
+    </section>
+
+    <section>
+      <h2>LoRA (Low-Rank Adaptation)</h2>
+      <p>
+        LoRA introduces small trainable <strong>low-rank adapters</strong> into pre-trained models while keeping the original weights frozen. This drastically reduces compute and memory requirements while enabling task adaptation.
+      </p>
+      <p>
+        <strong>Architecture:</strong> Adapters are injected into attention and feed-forward layers. Only the adapter matrices are trained; original model weights remain frozen.
+      </p>
+      <p>
+        <strong>Strengths:</strong> Efficient fine-tuning, modular (multiple LoRA adapters can coexist), and easy to merge with pre-trained models.  
+        <strong>Limitations:</strong> Slightly lower performance ceiling compared to full fine-tuning, and requires careful rank selection to balance efficiency and accuracy.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Task-specific instruction following, lightweight domain adaptation, and multi-task modular adapters.
+      </p>
+    </section>
+
+    <section>
+      <h2>QLoRA (Quantized LoRA)</h2>
+      <p>
+        QLoRA extends LoRA by enabling fine-tuning of **quantized models** (e.g., 4-bit or 8-bit) on consumer-grade hardware without significant performance degradation.
+      </p>
+      <p>
+        <strong>Architecture:</strong> Combines model quantization with LoRA adapters, allowing large transformer models to fit in limited GPU memory while maintaining training fidelity.
+      </p>
+      <p>
+        <strong>Strengths:</strong> Makes large-scale fine-tuning accessible on consumer GPUs, preserves accuracy close to full-precision LoRA, and reduces memory footprint.  
+        <strong>Limitations:</strong> Slightly higher training complexity, careful handling of quantization-aware operations is required, and some extreme edge cases may see minor degradation.
+      </p>
+      <p>
+        <strong>Use cases:</strong> Fine-tuning large LLMs for niche domains on limited hardware, personal AI assistants, and rapid prototyping of task-specific models.
+      </p>
+    </section>
+
+    <nav>
+      <a href="../index.html" style="color:#00bfff;">← Back to Home</a>
+    </nav>
+  </main>
+
+  <footer style="text-align:center; padding:20px 0; color:#888;">
+    <p>&copy; 2025 Fine-Tuning Deep Dive</p>
+  </footer>
+</body>
+</html>
