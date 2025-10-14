@@ -1,9 +1,8 @@
-
 /* General body styling */
 body {
   margin: 0;
   font-family: 'Roboto Mono', monospace;
-  background: url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001661/GSFC_20171208_Archive_e001661~orig.jpg') center/cover no-repeat;
+  background: url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg') center/cover no-repeat;
   color: #ffffff;
   overflow-x: hidden;
 }
@@ -177,16 +176,17 @@ button:hover {
 }
 
 .logo {
-  height: 1.5in; /* bigger logo */
+  height: 1.5in;
   width: auto;
   display: block;
   margin: 0 auto 0.5rem auto;
 }
 
 .company-name {
-  font-size: 3rem; /* bigger company name */
+  font-size: 3rem;
   color: #32CD32;
   font-weight: bold;
   margin: 0;
   font-family: 'Roboto Mono';
 }
+
