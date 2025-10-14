@@ -3,7 +3,7 @@ export default async function handler(req, res) {
   const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
   const HF_KEY = process.env.HF_KEY;
 
-  // Tavily search
+  // Step 1: Tavily search
   const tavilyRes = await fetch("https://api.tavily.com/search", {
     method: "POST",
     headers: {
@@ -14,24 +14,34 @@ export default async function handler(req, res) {
   });
   const tavilyData = await tavilyRes.json();
 
-  // Prepare summary prompt
+  // Step 2: Combine search results
   const summaries = tavilyData.results
     ?.map(r => `🔗 ${r.title}\n${r.content}`)
     .join("\n\n") || "No results found.";
 
-  // Call Hugging Face free LLM
-  const hfRes = await fetch("https://api-inference.huggingface.co/models/gpt2", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${HF_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ inputs: `Summarize the following search results:\n\n${summaries}` })
-  });
+  // Step 3: Call Hugging Face text-generation API
+  const hfRes = await fetch(
+    "https://api-inference.huggingface.co/models/mistral-small", // free model
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${HF_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        inputs: `Summarize the following search results into a concise answer and list the top links:\n\n${summaries}`,
+        parameters: {
+          max_new_tokens: 200
+        }
+      }),
+    }
+  );
+
   const hfData = await hfRes.json();
 
   res.status(200).json({
     answer: hfData[0]?.generated_text || "No summary available",
-    sources: tavilyData.results?.map(r => ({ title: r.title, url: r.url }))
+    sources: tavilyData.results?.map(r => ({ title: r.title, url: r.url })),
   });
 }
+
