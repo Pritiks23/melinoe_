@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -44,6 +44,63 @@
     <h2>Answers</h2>
     <div id="messages"></div>
   </section>
+  <canvas id="constellation"></canvas>
+  <script src="script.js"></script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Melinoë — Ask. Retrieve. Understand</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="branding" style="display: flex; align-items: center; justify-content: flex-start; padding: 20px;">
+      <img src="https://www.bing.com/th/id/BCO.41dad128-a511-4064-ad3e-61de1ab5967c.png" alt="Melinoë Logo" class="logo" style="height: 80px; margin-right: 20px;" />
+      <h1 class="company-name" style="font-size: 3rem; margin: 0;">Melinoë</h1>
+    </div>
+
+    <h1 style="text-align: center; font-size: 2.5rem; margin-top: 20px;">
+      Ask. Retrieve. Understand — <span style="color:#00bfff;">instantly.</span>
+    </h1>
+    <p style="text-align: center; font-size: 1.3rem; color:#ccc; margin-bottom: 30px;">
+      Answers that think like an engineer.
+    </p>
+
+    <div id="chat-input-box">
+      <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Ask any AI engineering question..." required />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <a href="#categories" class="browse-button">Browse Questions ↓</a>
+  </header>
+
+  <section id="categories">
+    <h2>Explore by Category</h2>
+    <p>Dive deep into specialized AI/ML topics</p>
+    <div class="grid">
+      <a href="guides/rag.html" class="card"><h3>RAG</h3><p>Retrieval-Augmented Generation</p></a>
+      <a href="guides/embeddings.html" class="card"><h3>Embeddings</h3><p>Vector representations & models</p></a>
+      <a href="guides/vector-dbs.html" class="card"><h3>Vector Databases</h3><p>Pinecone, Weaviate, Chroma</p></a>
+      <a href="guides/fine-tuning.html" class="card"><h3>Fine-tuning</h3><p>Model customization</p></a>
+      <a href="guides/prompt-engineering.html" class="card"><h3>Prompt Engineering</h3><p>Effective prompting techniques</p></a>
+      <a href="guides/model-selection.html" class="card"><h3>Model Selection</h3><p>Choosing the right LLM</p></a>
+      <a href="guides/ai-safety.html" class="card"><h3>AI Safety</h3><p>Alignment & safety practices</p></a>
+      <a href="guides/ai-agents.html" class="card"><h3>Agents</h3><p>Autonomous AI systems</p></a>
+    </div>
+  </section>
+
+  <section id="chatbox">
+    <h2>Answers</h2>
+    <div id="messages"></div>
+  </section>
+
   <canvas id="constellation"></canvas>
   <script src="script.js"></script>
 </body>
