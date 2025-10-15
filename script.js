@@ -79,7 +79,7 @@ function formatResults(results) {
 const suggestionsBox = document.createElement('div');
 suggestionsBox.id = 'suggestions-box';
 suggestionsBox.style.position = 'absolute';
-suggestionsBox.style.background = '#000';
+suggestionsBox.style.background = '#fff';
 suggestionsBox.style.color = '#000';
 suggestionsBox.style.fontFamily = 'Arial, sans-serif';
 suggestionsBox.style.border = '1px solid #ccc';
@@ -117,7 +117,7 @@ input.addEventListener('input', () => {
     div.textContent = q;
     div.style.padding = '4px 8px';
     div.style.cursor = 'pointer';
-    div.style.color = '#fff';
+    div.style.color = '#000';
     div.style.background = '#fff';
     div.addEventListener('mouseover', () => div.style.background = '#e0f0ff');
     div.addEventListener('mouseout', () => div.style.background = '#fff');
