@@ -45,67 +45,17 @@ function updateLastBotMessage(text) {
   }
 }
 
-// function formatResults(results) {
-//   if (!results || results.length === 0) return "No results found.";
-//   return results
-//     .map(
-//       (r) =>
-//         `🔗 <a href="${r.url}" target="_blank">${r.title}</a><br/>${r.content.slice(0, 200)}...`
-//     )
-//     .join("<br/><br/>");
-// }
 function formatResults(results) {
   if (!results || results.length === 0) return "No results found.";
-
-  // --- Create confident executive summary ---
-  const summaryText = results
-    .map(r => r.content)
-    .join(" ")
-    .slice(0, 450)
-    .replace(/<\/?[^>]+(>|$)/g, "");
-
-  const summary = `
-    <div class="summary-box">
-      <h3>🧭 Executive Summary</h3>
-      <p>${summaryText}...</p>
-    </div>
-  `;
-
-  // --- Extract key takeaways (auto-select a few strong lines) ---
-  const takeaways = results
-    .slice(0, 3)
-    .map(r => {
-      const snippet = r.content.split(/[.!?]/)[0].trim();
-      return `<li>${snippet.charAt(0).toUpperCase() + snippet.slice(1)}.</li>`;
-    })
-    .join("");
-
-  const insights = `
-    <div class="insight-box">
-      <h4>📌 Key Takeaways</h4>
-      <ul>${takeaways}</ul>
-    </div>
-  `;
-
-  // --- Credible research-style sources ---
-  const sources = results.map(
-    (r, i) => `
-      <div class="source-card">
-        <a href="${r.url}" target="_blank" class="source-title">${r.title}</a>
-        <p class="source-snippet">${r.content.slice(0, 320)}...</p>
-      </div>
-    `
-  ).join("");
-
-  const references = `
-    <div class="sources-section">
-      <h4>🔗 Sources & References</h4>
-      ${sources}
-    </div>
-  `;
-
-  return `${summary}${insights}${references}`;
+  return results
+    .map(
+      (r) =>
+        `🔗 <a href="${r.url}" target="_blank">${r.title}</a><br/>${r.content.slice(0, 200)}...`
+    )
+    .join("<br/><br/>");
 }
+
+
 
 //new
 const canvas = document.getElementById('constellation');
