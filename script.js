@@ -1,3 +1,4 @@
+// ===== Chat Form Logic =====
 const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
 const messages = document.getElementById("messages");
@@ -41,9 +42,6 @@ form.addEventListener("submit", async (e) => {
     const formattedResults = formatResults(data.results);
     updateLastBotMessage(structuredAnswer + "<br><br>" + formattedResults);
 
-
-
-
   } catch (err) {
     console.error("Error:", err);
     updateLastBotMessage("❌ Error fetching results. Please try again.");
@@ -75,10 +73,57 @@ function formatResults(results) {
     .join("<br/><br/>");
 }
 
+// ===== Autocomplete Suggestions =====
+const userInput = document.getElementById('user-input');
+const suggestionsBox = document.createElement('div');
+suggestionsBox.id = 'suggestions-box';
+suggestionsBox.style.position = 'absolute';
+suggestionsBox.style.background = '#fff';
+suggestionsBox.style.border = '1px solid #ccc';
+suggestionsBox.style.zIndex = '1000';
+suggestionsBox.style.width = `${userInput.offsetWidth}px`;
+suggestionsBox.style.maxHeight = '200px';
+suggestionsBox.style.overflowY = 'auto';
+suggestionsBox.style.fontSize = '0.95rem';
+suggestionsBox.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+userInput.parentNode.appendChild(suggestionsBox);
 
+let questions = [];
 
+// Load questions.json
+fetch('questions.json')
+  .then(res => res.json())
+  .then(data => { questions = data; });
 
-//new
+// Show suggestions as user types
+userInput.addEventListener('input', () => {
+  const query = userInput.value.toLowerCase();
+  suggestionsBox.innerHTML = '';
+  if (!query) return;
+
+  const filtered = questions.filter(q => q.toLowerCase().includes(query)).slice(0, 5);
+  filtered.forEach(q => {
+    const div = document.createElement('div');
+    div.textContent = q;
+    div.style.padding = '0.5rem';
+    div.style.cursor = 'pointer';
+    div.addEventListener('click', () => {
+      userInput.value = q;
+      suggestionsBox.innerHTML = '';
+      userInput.focus();
+    });
+    suggestionsBox.appendChild(div);
+  });
+});
+
+// Close suggestions if click outside
+document.addEventListener('click', (e) => {
+  if (!userInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+    suggestionsBox.innerHTML = '';
+  }
+});
+
+// ===== Constellation Animation =====
 const canvas = document.getElementById('constellation');
 const ctx = canvas.getContext('2d');
 
@@ -100,7 +145,6 @@ class Star {
     this.vx = (Math.random() - 0.5) * 0.3;
     this.vy = (Math.random() - 0.5) * 0.3;
     this.radius = Math.random() * 2.5 + 1.5;
-
   }
 
   move() {
@@ -128,10 +172,9 @@ function connectStars() {
         ctx.beginPath();
         ctx.moveTo(stars[i].x, stars[i].y);
         ctx.lineTo(stars[j].x, stars[j].y);
-        ctx.lineWidth = 1.2; // Thicker lines
-        ctx.strokeStyle = 'rgba(0, 150, 255, 0.4)'; // More visible
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = 'rgba(0, 150, 255, 0.4)';
         ctx.stroke();
-
       }
     }
   }
@@ -151,3 +194,4 @@ for (let i = 0; i < numStars; i++) {
   stars.push(new Star());
 }
 animateConstellation();
+
