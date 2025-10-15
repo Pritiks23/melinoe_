@@ -22,19 +22,9 @@ form.addEventListener("submit", async (e) => {
     if (!response.ok) throw new Error("Network response was not ok");
 
     const data = await response.json();
-    const answerObj = data.answer;
+    const answer = formatResults(data.results);
+    updateLastBotMessage(answer);
 
-// Build a readable string for the chatbox
-    let answerText = "";
-    if (answerObj.tldr) answerText += `💡 TL;DR: ${answerObj.tldr}\n\n`;
-    if (answerObj.why) answerText += `🔍 Why: ${answerObj.why}\n\n`;
-    if (answerObj.implementation) answerText += `🛠 Implementation: ${answerObj.implementation}\n\n`;
-    if (answerObj.test) answerText += `✅ Test: ${answerObj.test}\n\n`;
-    if (answerObj.sources && answerObj.sources.length > 0) {
-  answerText += `📚 Sources:\n` + answerObj.sources.map(s => `- ${s.title}: ${s.url}`).join("\n");
-}
-
-updateLastBotMessage(answerText || "No answer available.");
 
   } catch (err) {
     console.error("Error:", err);
