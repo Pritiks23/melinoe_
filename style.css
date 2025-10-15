@@ -75,7 +75,8 @@ header p {
 }
 
 #user-input::placeholder {
-  color: #888;
+  color: white;
+  opacity: 1;
 }
 
 button {
