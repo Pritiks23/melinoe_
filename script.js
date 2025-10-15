@@ -50,7 +50,7 @@ function formatResults(results) {
   return results
     .map(
       (r) =>
-        `🔗 <a href="${r.url}" target="_blank">${r.title}</a><br/>${r.content.slice(0, 200)}...`
+        `🔗 <a href="${r.url}" target="_blank">${r.title}</a><br/>${r.content.slice(0, 600)}...`
     )
     .join("<br/><br/>");
 }
