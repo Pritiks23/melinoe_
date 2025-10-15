@@ -24,6 +24,7 @@
       Answers that think like an engineer.
     </p>
 
+    <!-- ✅ Chat input -->
     <div id="chat-input-box">
       <form id="chat-form">
         <input type="text" id="user-input" placeholder="Ask any AI engineering question..." required />
@@ -31,9 +32,16 @@
       </form>
     </div>
 
+    <!-- ✅ Moved chatbox (answers) directly below input -->
+    <section id="chatbox" style="margin-top: 1rem;">
+      <h2>Answers</h2>
+      <div id="messages"></div>
+    </section>
+
     <a href="#categories" class="browse-button">Browse Questions ↓</a>
   </header>
 
+  <!-- 🔽 Categories moved below chat area -->
   <section id="categories">
     <h2>Explore by Category</h2>
     <p>Dive deep into specialized AI/ML topics</p>
@@ -49,11 +57,7 @@
     </div>
   </section>
 
-  <section id="chatbox">
-    <h2>Answers</h2>
-    <div id="messages"></div>
-  </section>
-
   <script src="script.js"></script>
 </body>
 </html>
+
