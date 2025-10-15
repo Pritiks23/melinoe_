@@ -6,12 +6,78 @@
   <title>Melinoë — Ask. Retrieve. Understand</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Left-align chat and answers */
+    body {
+      font-family: 'Inter', 'Space Grotesk', 'Roboto Mono', monospace;
+      background-color: #050505;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    /* === Chat Section === */
     #chat-section {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       text-align: left;
       padding: 2rem;
+    }
+
+    /* Blue glowing container for input */
+    #chat-input-box {
+      background: linear-gradient(135deg, rgba(0, 128, 255, 0.15), rgba(0, 255, 255, 0.15));
+      border: 1px solid rgba(0, 180, 255, 0.4);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 0 20px rgba(0, 150, 255, 0.15);
+      backdrop-filter: blur(10px);
+      margin-bottom: 2rem;
+    }
+
+    #chat-form {
+      display: flex;
+      gap: 10px;
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background-color: #0a0a0a;
+      color: #fff;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    #user-input:focus {
+      border-color: #00aaff;
+      box-shadow: 0 0 8px #0077ff;
+    }
+
+    button {
+      background: linear-gradient(90deg, #00bfff, #0077ff);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.03);
+    }
+
+    #chatbox {
+      margin-top: 2rem;
     }
 
     #messages {
@@ -27,40 +93,7 @@
 
     #categories {
       margin-top: 4rem;
-    }
-
-    #chat-form {
-      display: flex;
-      justify-content: flex-start;
-      gap: 10px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    #user-input {
-      flex: 1;
-      padding: 12px;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #444;
-      background-color: #111;
-      color: white;
-    }
-
-    button {
-      background: linear-gradient(90deg, #00ffcc, #0077ff);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 20px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      opacity: 0.9;
-      transform: scale(1.03);
+      text-align: center;
     }
   </style>
 </head>
@@ -74,21 +107,23 @@
       <h1 class="company-name" style="font-size: 3rem; margin: 0; color: #ffffff;">Melinoë</h1>
     </div>
 
-    <h1 style="text-align: center; font-size: 2.5rem; margin-top: 20px;">
+    <h1 style="font-size: 2.5rem; margin-top: 20px;">
       Ask. Retrieve. Understand — <span style="color:#ffffff;">instantly.</span>
     </h1>
 
-    <p style="text-align: center; font-size: 1.3rem; color:#ccc; margin-bottom: 30px;">
+    <p style="font-size: 1.3rem; color:#ccc; margin-bottom: 30px;">
       Answers that think like an engineer.
     </p>
   </header>
 
-  <!-- Chat section moved above categories -->
+  <!-- Chat section with blue glowing input box -->
   <section id="chat-section">
-    <form id="chat-form">
-      <input type="text" id="user-input" placeholder="Ask any AI engineering question..." required />
-      <button type="submit">Search</button>
-    </form>
+    <div id="chat-input-box">
+      <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Ask any AI engineering question..." required />
+        <button type="submit">Search</button>
+      </form>
+    </div>
 
     <div id="chatbox">
       <h2>Answers</h2>
