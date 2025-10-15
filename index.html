@@ -5,6 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Melinoë — Ask. Retrieve. Understand</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Left-align chat and answers */
+    #chat-section {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+      padding: 2rem;
+    }
+
+    #messages {
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      white-space: pre-wrap;
+      font-family: 'Roboto Mono', monospace;
+      color: #f2f2f2;
+      overflow-y: auto;
+      max-height: 600px;
+    }
+
+    #categories {
+      margin-top: 4rem;
+    }
+
+    #chat-form {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background-color: #111;
+      color: white;
+    }
+
+    button {
+      background: linear-gradient(90deg, #00ffcc, #0077ff);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.03);
+    }
+  </style>
 </head>
 <body>
 
@@ -23,25 +81,21 @@
     <p style="text-align: center; font-size: 1.3rem; color:#ccc; margin-bottom: 30px;">
       Answers that think like an engineer.
     </p>
-
-    <!-- ✅ Chat input -->
-    <div id="chat-input-box">
-      <form id="chat-form">
-        <input type="text" id="user-input" placeholder="Ask any AI engineering question..." required />
-        <button type="submit">Search</button>
-      </form>
-    </div>
-
-    <!-- ✅ Moved chatbox (answers) directly below input -->
-    <section id="chatbox" style="margin-top: 1rem;">
-      <h2>Answers</h2>
-      <div id="messages"></div>
-    </section>
-
-    <a href="#categories" class="browse-button">Browse Questions ↓</a>
   </header>
 
-  <!-- 🔽 Categories moved below chat area -->
+  <!-- Chat section moved above categories -->
+  <section id="chat-section">
+    <form id="chat-form">
+      <input type="text" id="user-input" placeholder="Ask any AI engineering question..." required />
+      <button type="submit">Search</button>
+    </form>
+
+    <div id="chatbox">
+      <h2>Answers</h2>
+      <div id="messages"></div>
+    </div>
+  </section>
+
   <section id="categories">
     <h2>Explore by Category</h2>
     <p>Dive deep into specialized AI/ML topics</p>
@@ -60,4 +114,5 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
