@@ -1,3 +1,4 @@
+// ===== Chat Handling =====
 const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
 const messages = document.getElementById("messages");
@@ -24,25 +25,22 @@ form.addEventListener("submit", async (e) => {
     const data = await response.json();
     const a = data.answer || {};
     let structuredAnswer = `
-    <b>[Intent: ${a.intent || "Unknown"}]</b><br>
-    Confidence: ${a.confidence || "N/A"}<br><br>
-    <b>1. TL;DR</b> — ${a.tldr || "N/A"}<br><br>
-    <b>2. Short Answer</b> — ${a.short || "N/A"}<br><br>
-    <b>3. Why this is true</b> — ${a.why || "N/A"}<br><br>
-    <b>4. Implementation</b><pre>${a.implementation || "N/A"}</pre><br>
-    <b>5. Quick test / verification</b><pre>${a.test || "N/A"}</pre><br>
-    <b>6. Alternatives & tradeoffs</b><ul>${(a.alternatives || []).map(x => `<li>${x}</li>`).join("")}</ul>
-    <b>7. Caveats & risks</b><ul>${(a.caveats || []).map(x => `<li>${x}</li>`).join("")}</ul>
-    <b>8. Performance / cost impact</b> — ${a.cost || "N/A"}<br><br>
-    <b>9. Sources</b><ul>${(a.sources || []).map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a> — ${s.note}</li>`).join("")}</ul>
-    <b>10. Next steps</b><ul>${(a.nextSteps || []).map(x => `<li>${x}</li>`).join("")}</ul>
+      <b>[Intent: ${a.intent || "Unknown"}]</b><br>
+      Confidence: ${a.confidence || "N/A"}<br><br>
+      <b>1. TL;DR</b> — ${a.tldr || "N/A"}<br><br>
+      <b>2. Short Answer</b> — ${a.short || "N/A"}<br><br>
+      <b>3. Why this is true</b> — ${a.why || "N/A"}<br><br>
+      <b>4. Implementation</b><pre>${a.implementation || "N/A"}</pre><br>
+      <b>5. Quick test / verification</b><pre>${a.test || "N/A"}</pre><br>
+      <b>6. Alternatives & tradeoffs</b><ul>${(a.alternatives || []).map(x => `<li>${x}</li>`).join("")}</ul>
+      <b>7. Caveats & risks</b><ul>${(a.caveats || []).map(x => `<li>${x}</li>`).join("")}</ul>
+      <b>8. Performance / cost impact</b> — ${a.cost || "N/A"}<br><br>
+      <b>9. Sources</b><ul>${(a.sources || []).map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a> — ${s.note}</li>`).join("")}</ul>
+      <b>10. Next steps</b><ul>${(a.nextSteps || []).map(x => `<li>${x}</li>`).join("")}</ul>
     `;
 
     const formattedResults = formatResults(data.results);
     updateLastBotMessage(structuredAnswer + "<br><br>" + formattedResults);
-
-
-
 
   } catch (err) {
     console.error("Error:", err);
@@ -75,10 +73,62 @@ function formatResults(results) {
     .join("<br/><br/>");
 }
 
+// ===== Autocomplete (Top 2 suggestions) =====
+const suggestionsBox = document.createElement('div');
+suggestionsBox.style.position = 'absolute';
+suggestionsBox.style.background = '#fff';
+suggestionsBox.style.border = '1px solid #ccc';
+suggestionsBox.style.width = `${input.offsetWidth}px`;
+suggestionsBox.style.top = `${input.offsetTop + input.offsetHeight}px`;
+suggestionsBox.style.left = `${input.offsetLeft}px`;
+suggestionsBox.style.zIndex = '1000';
+suggestionsBox.style.fontSize = '0.95rem';
+suggestionsBox.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+suggestionsBox.style.display = 'none';
+input.parentNode.appendChild(suggestionsBox);
 
+let questions = [];
 
+// Load questions.json
+fetch('questions.json')
+  .then(res => res.json())
+  .then(data => { questions = data; });
 
-//new
+input.addEventListener('input', () => {
+  const query = input.value.toLowerCase().trim();
+  suggestionsBox.innerHTML = '';
+  if (!query) {
+    suggestionsBox.style.display = 'none';
+    return;
+  }
+
+  const matches = questions.filter(q => q.toLowerCase().includes(query)).slice(0, 2);
+  if (matches.length === 0) {
+    suggestionsBox.style.display = 'none';
+    return;
+  }
+
+  matches.forEach(q => {
+    const div = document.createElement('div');
+    div.textContent = q;
+    div.style.padding = '4px 8px';
+    div.style.cursor = 'pointer';
+    div.addEventListener('click', () => {
+      input.value = q;
+      suggestionsBox.style.display = 'none';
+      input.focus();
+    });
+    suggestionsBox.appendChild(div);
+  });
+
+  suggestionsBox.style.display = 'block';
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target !== input) suggestionsBox.style.display = 'none';
+});
+
+// ===== Constellation Animation =====
 const canvas = document.getElementById('constellation');
 const ctx = canvas.getContext('2d');
 
@@ -100,7 +150,6 @@ class Star {
     this.vx = (Math.random() - 0.5) * 0.3;
     this.vy = (Math.random() - 0.5) * 0.3;
     this.radius = Math.random() * 2.5 + 1.5;
-
   }
 
   move() {
@@ -128,10 +177,9 @@ function connectStars() {
         ctx.beginPath();
         ctx.moveTo(stars[i].x, stars[i].y);
         ctx.lineTo(stars[j].x, stars[j].y);
-        ctx.lineWidth = 1.2; // Thicker lines
-        ctx.strokeStyle = 'rgba(0, 150, 255, 0.4)'; // More visible
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = 'rgba(0, 150, 255, 0.4)';
         ctx.stroke();
-
       }
     }
   }
@@ -147,8 +195,7 @@ function animateConstellation() {
   requestAnimationFrame(animateConstellation);
 }
 
-for (let i = 0; i < numStars; i++) {
-  stars.push(new Star());
-}
+for (let i = 0; i < numStars; i++) stars.push(new Star());
 animateConstellation();
+
 
