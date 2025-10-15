@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
   try {
-    // 1️⃣ Fetch Tavily results (exactly like your working version)
+    // 1️⃣ Fetch Tavily results
     const tavilyResponse = await fetch("https://api.tavily.com/search", {
       method: "POST",
       headers: {
@@ -35,14 +35,14 @@ export default async function handler(req, res) {
     const tavilyData = await tavilyResponse.json();
     const results = tavilyData.results || [];
 
-    // 2️⃣ Prepare Claude prompt (if results exist, include them; else just query)
+    // 2️⃣ Prepare Claude prompt
     const contextText = results.length
       ? results.map((r, i) => `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`).join("\n\n")
       : "No relevant Tavily results found.";
 
     const prompt = `
 You are an expert AI/ML assistant for developers.
-Using the following context, answer the user’s question in structured JSON:
+Using the following context, answer the user's question in structured JSON:
 
 {
   "tldr": "string",
@@ -85,6 +85,7 @@ QUESTION: ${query}
       try {
         answer = JSON.parse(rawText);
       } catch {
+        // If parsing fails, fallback to TL;DR only
         answer = { tldr: rawText || "Claude summary failed." };
       }
     } catch (e) {
@@ -92,7 +93,7 @@ QUESTION: ${query}
       answer = { tldr: "Claude summary unavailable." };
     }
 
-    // 4️⃣ Return both Tavily results and Claude answer
+    // 4️⃣ Return both Tavily results and Claude summary
     res.status(200).json({ results, answer });
 
   } catch (err) {
@@ -100,6 +101,5 @@ QUESTION: ${query}
     res.status(500).json({ error: "Server error." });
   }
 }
-
 
 
