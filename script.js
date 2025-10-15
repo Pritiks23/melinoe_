@@ -22,8 +22,10 @@ form.addEventListener("submit", async (e) => {
     if (!response.ok) throw new Error("Network response was not ok");
 
     const data = await response.json();
-    const answer = formatResults(data.results);
-    updateLastBotMessage(answer);
+    const answerText = data.answer?.tldr || "No summary available.";
+    const formattedResults = formatResults(data.results);
+    updateLastBotMessage(answerText + "<br><br>" + formattedResults);
+
 
 
   } catch (err) {
