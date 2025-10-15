@@ -1,8 +1,9 @@
-// ===== Chat Handling =====
+// ==== Chat functionality ====
 const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
 const messages = document.getElementById("messages");
 
+// Handle form submission
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const question = input.value.trim();
@@ -25,18 +26,18 @@ form.addEventListener("submit", async (e) => {
     const data = await response.json();
     const a = data.answer || {};
     let structuredAnswer = `
-      <b>[Intent: ${a.intent || "Unknown"}]</b><br>
-      Confidence: ${a.confidence || "N/A"}<br><br>
-      <b>1. TL;DR</b> — ${a.tldr || "N/A"}<br><br>
-      <b>2. Short Answer</b> — ${a.short || "N/A"}<br><br>
-      <b>3. Why this is true</b> — ${a.why || "N/A"}<br><br>
-      <b>4. Implementation</b><pre>${a.implementation || "N/A"}</pre><br>
-      <b>5. Quick test / verification</b><pre>${a.test || "N/A"}</pre><br>
-      <b>6. Alternatives & tradeoffs</b><ul>${(a.alternatives || []).map(x => `<li>${x}</li>`).join("")}</ul>
-      <b>7. Caveats & risks</b><ul>${(a.caveats || []).map(x => `<li>${x}</li>`).join("")}</ul>
-      <b>8. Performance / cost impact</b> — ${a.cost || "N/A"}<br><br>
-      <b>9. Sources</b><ul>${(a.sources || []).map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a> — ${s.note}</li>`).join("")}</ul>
-      <b>10. Next steps</b><ul>${(a.nextSteps || []).map(x => `<li>${x}</li>`).join("")}</ul>
+    <b>[Intent: ${a.intent || "Unknown"}]</b><br>
+    Confidence: ${a.confidence || "N/A"}<br><br>
+    <b>1. TL;DR</b> — ${a.tldr || "N/A"}<br><br>
+    <b>2. Short Answer</b> — ${a.short || "N/A"}<br><br>
+    <b>3. Why this is true</b> — ${a.why || "N/A"}<br><br>
+    <b>4. Implementation</b><pre>${a.implementation || "N/A"}</pre><br>
+    <b>5. Quick test / verification</b><pre>${a.test || "N/A"}</pre><br>
+    <b>6. Alternatives & tradeoffs</b><ul>${(a.alternatives || []).map(x => `<li>${x}</li>`).join("")}</ul>
+    <b>7. Caveats & risks</b><ul>${(a.caveats || []).map(x => `<li>${x}</li>`).join("")}</ul>
+    <b>8. Performance / cost impact</b> — ${a.cost || "N/A"}<br><br>
+    <b>9. Sources</b><ul>${(a.sources || []).map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a> — ${s.note}</li>`).join("")}</ul>
+    <b>10. Next steps</b><ul>${(a.nextSteps || []).map(x => `<li>${x}</li>`).join("")}</ul>
     `;
 
     const formattedResults = formatResults(data.results);
@@ -51,6 +52,7 @@ form.addEventListener("submit", async (e) => {
 function addMessage(sender, text) {
   const div = document.createElement("div");
   div.classList.add("message");
+  div.style.textAlign = "left";
   div.innerHTML = `<span class="${sender}">${sender === "user" ? "You" : "AI"}:</span> ${text}`;
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
@@ -73,17 +75,21 @@ function formatResults(results) {
     .join("<br/><br/>");
 }
 
-// ===== Autocomplete (Top 2 suggestions) =====
+// ==== Auto-suggest functionality ====
 const suggestionsBox = document.createElement('div');
+suggestionsBox.id = 'suggestions-box';
 suggestionsBox.style.position = 'absolute';
 suggestionsBox.style.background = '#fff';
+suggestionsBox.style.color = '#000';
+suggestionsBox.style.fontFamily = 'Arial, sans-serif';
 suggestionsBox.style.border = '1px solid #ccc';
+suggestionsBox.style.borderRadius = '4px';
+suggestionsBox.style.boxShadow = '0 2px 6px rgba(0,0,0,0.25)';
+suggestionsBox.style.padding = '2px 0';
 suggestionsBox.style.width = `${input.offsetWidth}px`;
 suggestionsBox.style.top = `${input.offsetTop + input.offsetHeight}px`;
 suggestionsBox.style.left = `${input.offsetLeft}px`;
-suggestionsBox.style.zIndex = '1000';
-suggestionsBox.style.fontSize = '0.95rem';
-suggestionsBox.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+suggestionsBox.style.zIndex = '9999';
 suggestionsBox.style.display = 'none';
 input.parentNode.appendChild(suggestionsBox);
 
@@ -95,24 +101,26 @@ fetch('questions.json')
   .then(data => { questions = data; });
 
 input.addEventListener('input', () => {
-  const query = input.value.toLowerCase().trim();
+  const query = input.value.toLowerCase();
   suggestionsBox.innerHTML = '';
   if (!query) {
     suggestionsBox.style.display = 'none';
     return;
   }
-
-  const matches = questions.filter(q => q.toLowerCase().includes(query)).slice(0, 2);
-  if (matches.length === 0) {
+  const filtered = questions.filter(q => q.toLowerCase().includes(query)).slice(0, 2);
+  if (filtered.length === 0) {
     suggestionsBox.style.display = 'none';
     return;
   }
-
-  matches.forEach(q => {
+  filtered.forEach(q => {
     const div = document.createElement('div');
     div.textContent = q;
     div.style.padding = '4px 8px';
     div.style.cursor = 'pointer';
+    div.style.color = '#000';
+    div.style.background = '#fff';
+    div.addEventListener('mouseover', () => div.style.background = '#e0f0ff');
+    div.addEventListener('mouseout', () => div.style.background = '#fff');
     div.addEventListener('click', () => {
       input.value = q;
       suggestionsBox.style.display = 'none';
@@ -120,15 +128,17 @@ input.addEventListener('input', () => {
     });
     suggestionsBox.appendChild(div);
   });
-
   suggestionsBox.style.display = 'block';
 });
 
+// Close suggestions if click outside
 document.addEventListener('click', (e) => {
-  if (e.target !== input) suggestionsBox.style.display = 'none';
+  if (!input.contains(e.target) && !suggestionsBox.contains(e.target)) {
+    suggestionsBox.style.display = 'none';
+  }
 });
 
-// ===== Constellation Animation =====
+// ==== Constellation canvas ====
 const canvas = document.getElementById('constellation');
 const ctx = canvas.getContext('2d');
 
@@ -151,14 +161,12 @@ class Star {
     this.vy = (Math.random() - 0.5) * 0.3;
     this.radius = Math.random() * 2.5 + 1.5;
   }
-
   move() {
     this.x += this.vx;
     this.y += this.vy;
     if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
     if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
   }
-
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -187,15 +195,14 @@ function connectStars() {
 
 function animateConstellation() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  stars.forEach(star => {
-    star.move();
-    star.draw();
-  });
+  stars.forEach(star => { star.move(); star.draw(); });
   connectStars();
   requestAnimationFrame(animateConstellation);
 }
 
-for (let i = 0; i < numStars; i++) stars.push(new Star());
+for (let i = 0; i < numStars; i++) {
+  stars.push(new Star());
+}
 animateConstellation();
 
 
