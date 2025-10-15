@@ -30,7 +30,7 @@ If uncertain about a fact, quantify uncertainty and give a short plan to verify.
 
 Respond using ONLY the sources listed in 'evidence' unless explicitly marked speculation.
 Output must match this exact JSON schema:
-
+Output only valid JSON. Do not wrap the JSON in markdown, code fences, or strings. Each key must be top-level.
 {
   "intent": "string",
   "confidence": "string",
