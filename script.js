@@ -22,9 +22,25 @@ form.addEventListener("submit", async (e) => {
     if (!response.ok) throw new Error("Network response was not ok");
 
     const data = await response.json();
-    const answerText = data.answer?.tldr || "No summary available.";
+    const a = data.answer || {};
+    let structuredAnswer = `
+    <b>[Intent: ${a.intent || "Unknown"}]</b><br>
+    Confidence: ${a.confidence || "N/A"}<br><br>
+    <b>1. TL;DR</b> — ${a.tldr || "N/A"}<br><br>
+    <b>2. Short Answer</b> — ${a.short || "N/A"}<br><br>
+    <b>3. Why this is true</b> — ${a.why || "N/A"}<br><br>
+    <b>4. Implementation</b><pre>${a.implementation || "N/A"}</pre><br>
+    <b>5. Quick test / verification</b><pre>${a.test || "N/A"}</pre><br>
+    <b>6. Alternatives & tradeoffs</b><ul>${(a.alternatives || []).map(x => `<li>${x}</li>`).join("")}</ul>
+    <b>7. Caveats & risks</b><ul>${(a.caveats || []).map(x => `<li>${x}</li>`).join("")}</ul>
+    <b>8. Performance / cost impact</b> — ${a.cost || "N/A"}<br><br>
+    <b>9. Sources</b><ul>${(a.sources || []).map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a> — ${s.note}</li>`).join("")}</ul>
+    <b>10. Next steps</b><ul>${(a.nextSteps || []).map(x => `<li>${x}</li>`).join("")}</ul>
+    `;
+
     const formattedResults = formatResults(data.results);
-    updateLastBotMessage(answerText + "<br><br>" + formattedResults);
+    updateLastBotMessage(structuredAnswer + "<br><br>" + formattedResults);
+
 
 
 
