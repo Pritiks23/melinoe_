@@ -222,3 +222,48 @@ button:hover {
   text-shadow: 0 0 25px rgba(0, 191, 255, 1), 0 0 70px rgba(0, 191, 255, 0.8);
 }
 
+/*new part*/
+/* Modal background */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.8); /* semi-transparent dark overlay */
+}
+
+/* Modal content box */
+.modal-content {
+  position: relative;
+  margin: 5% auto;
+  width: 80%;
+  max-width: 900px;
+  background-color: #000; /* black background behind iframe */
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: #0f62fe;
+}
+
+/* Checkbox label style */
+#dont-show-again {
+  margin-right: 0.3rem;
+}
+
