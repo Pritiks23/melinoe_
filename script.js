@@ -205,4 +205,39 @@ for (let i = 0; i < numStars; i++) {
 }
 animateConstellation();
 
+/* new part*/
+// --- Intro Video Modal with "Don't show again" ---
+function setCookie(name, value, days) {
+  const d = new Date();
+  d.setTime(d.getTime() + (days*24*60*60*1000));
+  document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+}
+
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));
+  return match ? match[2] : null;
+}
+
+window.addEventListener('load', () => {
+  const modal = document.getElementById('intro-modal');
+  const closeBtn = document.getElementById('close-modal');
+  const dontShowCheckbox = document.getElementById('dont-show-again');
+
+  // Only show modal if cookie not set
+  if (getCookie('hideIntroModal') === 'true') return;
+
+  modal.style.display = 'block';
+
+  closeBtn.onclick = () => {
+    if (dontShowCheckbox.checked) setCookie('hideIntroModal', 'true', 365);
+    modal.style.display = 'none';
+  };
+
+  window.onclick = (event) => {
+    if (event.target === modal) {
+      if (dontShowCheckbox.checked) setCookie('hideIntroModal', 'true', 365);
+      modal.style.display = 'none';
+    }
+  };
+});
 
