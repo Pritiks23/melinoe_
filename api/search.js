@@ -39,8 +39,9 @@ export default async function handler(req, res) {
         "https://plotly.com/python/",
         "https://matplotlib.org/stable/users/index.html",
         "https://numpy.org/doc/"
-  ]
-})
+    ]
+  })
+});
   
     const tavilyData = await tavilyResponse.json();
     const results = tavilyData.results || [];
