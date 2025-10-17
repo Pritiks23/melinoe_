@@ -12,6 +12,32 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${TAVILY_API_KEY}`,
       },
       body: JSON.stringify({ query, max_results: 5 }),
+      includeDomains = [
+          "https://www.langchain.com/",
+          "https://huggingface.co/docs",
+          "https://www.llama.com/docs/overview/",
+          "https://console.groq.com/docs/overview",
+          "https://mistral.ai/solutions/document-ai",
+          "https://microsoft.github.io/autogen/0.2/docs/Getting-Started/",
+          "https://docs.cohere.com/",
+          "https://docs.claude.com/en/home",
+          "https://docs.pinecone.io/reference/api/introduction",
+          "https://docs.trychroma.com/docs",
+          "https://docs.weaviate.io/weaviate/config-refs",
+          "https://redis.io/docs/latest/",
+          "https://www.elastic.co/docs",
+          "https://docs.pytorch.org/docs/stable/",
+          "https://www.tensorflow.org/api_docs",
+          "https://spacy.io/api",
+          "https://keras.io/api/",
+          "https://pypi.org/project/scikit-learn/",
+          "https://docs.langflow.org/",
+          "https://microsoft.github.io/autogen/stable//index.html",
+          "https://docs.crewai.com/",
+          "https://plotly.com/python/",
+          "https://matplotlib.org/stable/users/index.html",
+          "https://numpy.org/doc/"
+];
     });
 
     const tavilyData = await tavilyResponse.json();
