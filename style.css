@@ -171,7 +171,7 @@ button:hover {
 }
 
 #messages {
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: #000000;
   color: #ffffff;
   border: 2px solid #00bfff;
   border-radius: 8px;
