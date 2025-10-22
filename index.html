@@ -17,14 +17,14 @@
     header {
       text-align: center;
       padding: 2rem 1rem;
-      position: relative; /* for pricing button */
+      position: relative; /* needed for absolute pricing button */
     }
 
-    /* Pricing button */
     #pricing-button {
       position: absolute;
       top: 1.5rem;
       right: 2rem;
+      z-index: 10;
       background: linear-gradient(90deg, #00bfff, #0077ff);
       color: white;
       border: none;
@@ -35,7 +35,6 @@
       transition: 0.3s;
       text-decoration: none;
     }
-
     #pricing-button:hover {
       opacity: 0.9;
       transform: scale(1.03);
@@ -163,9 +162,6 @@
 </head>
 <body>
 
-  <!-- Pricing button -->
-  <a id="pricing-button" href="pricing.html">Pricing</a>
-
   <!-- Intro Video Modal -->
   <div id="intro-modal" class="modal">
     <div class="modal-content">
@@ -194,6 +190,8 @@
   </div>
 
   <header>
+    <a id="pricing-button" href="pricing.html">Pricing</a>
+
     <div class="branding" style="text-align: center; margin-bottom: 2rem;">
       <img src="https://www.bing.com/th/id/BCO.41dad128-a511-4064-ad3e-61de1ab5967c.png" 
            alt="Melinoë Logo" class="logo" 
