@@ -17,26 +17,6 @@
     header {
       text-align: center;
       padding: 2rem 1rem;
-      position: relative;
-    }
-
-    /* === Pricing Link === */
-    .pricing-link {
-      position: absolute;
-      top: 1rem;
-      right: 1.5rem;
-      background: linear-gradient(90deg, #00bfff, #0077ff);
-      color: white;
-      padding: 10px 18px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .pricing-link:hover {
-      opacity: 0.9;
-      transform: scale(1.05);
     }
 
     /* === Chat Section === */
@@ -47,6 +27,7 @@
       padding: 2rem;
     }
 
+    /* Blue glowing container for input */
     #chat-input-box {
       background: linear-gradient(135deg, rgba(0, 128, 255, 0.15), rgba(0, 255, 255, 0.15));
       border: 1px solid rgba(0, 180, 255, 0.4);
@@ -115,30 +96,7 @@
       text-align: center;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-      padding: 0 1rem;
-    }
-
-    .card {
-      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 1rem;
-      text-decoration: none;
-      color: #fff;
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      border-color: #00aaff;
-      transform: scale(1.03);
-    }
-
-    /* === Intro Modal === */
+    /* === Intro Modal Styles === */
     .modal {
       display: none;
       position: fixed;
@@ -183,34 +141,50 @@
 </head>
 <body>
 
-  <a href="pricing.html" class="pricing-link">Pricing</a>
-
   <!-- Intro Video Modal -->
-  <div id="intro-modal" class="modal">
+  <!-- <div id="intro-modal" class="modal">
     <div class="modal-content">
       <span id="close-modal" class="close">&times;</span>
-
-      <div style="position: relative; width: 100%; height: 0; padding-top: 56.25%; box-shadow: 0 2px 8px rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden; border-radius: 8px;">
+      <div style="position: relative; width: 100%; height: 0; padding-top: 56.25%; overflow: hidden; border-radius: 8px;">
         <iframe 
           loading="lazy" 
           style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;" 
-          src="https://www.canva.com/design/DAG17LeO8to/LJplzZ44_QUMLJbKQXSQPQ/watch?embed" 
-          allowfullscreen="allowfullscreen" 
-          allow="fullscreen">
+          src="https://www.canva.com/design/DAG151Y7UFA/KkFCIU6sy4QfN9cOJt72gA/watch?embed" 
+          allowfullscreen>
         </iframe>
       </div>
-
-      <p style="color: #aaa; text-align: center; margin-top: 0.5rem; font-size: 0.9rem;">
-          Melinoë: The Ultimate AI Knowledge Base for Developers
-      </p>
-
       <div style="margin-top: 1rem; text-align: center;">
         <label style="color: #fff; font-size: 0.9rem;">
           <input type="checkbox" id="dont-show-again" /> Don't show again
         </label>
       </div>
     </div>
+  </div> -->
+  <div id="intro-modal" class="modal">
+  <div class="modal-content">
+    <span id="close-modal" class="close">&times;</span>
+
+    <div style="position: relative; width: 100%; height: 0; padding-top: 56.25%; padding-bottom: 0; box-shadow: 0 2px 8px rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden; border-radius: 8px; will-change: transform;">
+      <iframe 
+        loading="lazy" 
+        style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;" 
+        src="https://www.canva.com/design/DAG17LeO8to/LJplzZ44_QUMLJbKQXSQPQ/watch?embed" 
+        allowfullscreen="allowfullscreen" 
+        allow="fullscreen">
+      </iframe>
+    </div>
+
+    <p style="color: #aaa; text-align: center; margin-top: 0.5rem; font-size: 0.9rem;">
+        Melinoe: The Ultimate AI Knowledge base for Developers
+    </p>
+
+    <div style="margin-top: 1rem; text-align: center;">
+      <label style="color: #fff; font-size: 0.9rem;">
+        <input type="checkbox" id="dont-show-again" /> Don't show again
+      </label>
+    </div>
   </div>
+</div>
 
   <header>
     <div class="branding" style="text-align: center; margin-bottom: 2rem;">
@@ -260,6 +234,7 @@
 
   <script src="script.js"></script>
   <script>
+    // --- Intro Video Modal with "Don't show again" ---
     function setCookie(name, value, days) {
       const d = new Date();
       d.setTime(d.getTime() + (days*24*60*60*1000));
@@ -275,7 +250,10 @@
       const modal = document.getElementById('intro-modal');
       const closeBtn = document.getElementById('close-modal');
       const dontShowCheckbox = document.getElementById('dont-show-again');
+
+      // Only show modal if cookie not set
       if (getCookie('hideIntroModal') === 'true') return;
+
       modal.style.display = 'block';
 
       closeBtn.onclick = () => {
@@ -293,4 +271,5 @@
   </script>
 </body>
 </html>
+
 
