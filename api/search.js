@@ -2,41 +2,38 @@ import fs from "fs";
 import path from "path";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
   const { query, user_id } = req.body;
 
-  if (!user_id) {
-    return res.status(400).json({ error: "User ID required" });
+  if (!query || !user_id) {
+    return res.status(400).json({ error: "Missing query or user_id." });
   }
 
-  // Load user queries
+  // Path to your user_queries.json
   const filePath = path.join(process.cwd(), "user_queries.json");
-  let userQueries = {};
+  let userQueries;
+
   try {
-    userQueries = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  } catch (err) {
-    console.error("Error reading user_queries.json:", err);
-    return res.status(500).json({ error: "Server error" });
+    const fileData = fs.readFileSync(filePath, "utf8");
+    userQueries = JSON.parse(fileData);
+  } catch {
+    return res.status(500).json({ error: "Failed to read user data." });
   }
 
-  // Check user existence and remaining queries
+  // Check user
   const user = userQueries[user_id];
   if (!user) {
-    return res.status(403).json({ error: "Invalid User ID" });
-  }
-  if (user.used_queries >= user.max_queries) {
-    return res.status(403).json({ error: "❌ You have reached your query limit. Please upgrade to continue." });
+    return res.status(403).json({ error: "User ID not found." });
   }
 
-  // Environment keys
+  if (user.used_queries >= user.max_queries) {
+    return res.status(403).json({ error: "Query limit reached." });
+  }
+
   const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
   const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
   try {
-    // 1️⃣ Tavily search
+    // Tavily Search
     const tavilyResponse = await fetch("https://api.tavily.com/search", {
       method: "POST",
       headers: {
@@ -49,34 +46,14 @@ export default async function handler(req, res) {
     const tavilyData = await tavilyResponse.json();
     const results = tavilyData.results || [];
 
-    // 2️⃣ Context for Claude
     const contextText = results.length
       ? results.map((r, i) => `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`).join("\n\n")
       : "No relevant Tavily results found.";
 
-    // 3️⃣ Prompt for Claude
+    // Claude prompt
     const prompt = `
 System: You are an expert AI engineering assistant.
-Tone rules: confident, concise, direct. Use active voice.
-If uncertain about a fact, quantify uncertainty and give a short plan to verify.
-
-Respond using ONLY the sources listed in 'evidence' unless explicitly marked speculation.
-Output must match this exact JSON schema:
-Output only valid JSON. Do not wrap the JSON in markdown, code fences, or strings. Each key must be top-level.
-{
-  "intent": "string",
-  "confidence": "string",
-  "tldr": "string",
-  "short": "string",
-  "why": "string",
-  "implementation": "string",
-  "test": "string",
-  "alternatives": ["string"],
-  "caveats": ["string"],
-  "cost": "string",
-  "sources": [{"title":"", "url":"", "note":""}],
-  "nextSteps": ["string"]
-}
+Respond using ONLY the sources listed below.
 
 CONTEXT:
 ${contextText}
@@ -84,49 +61,32 @@ ${contextText}
 QUESTION: ${query}
 `;
 
-    // 4️⃣ Claude call
-    let answer = {};
-    try {
-      const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": CLAUDE_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-3-5-sonnet-20241022",
-          max_tokens: 1500,
-          messages: [{ role: "user", content: prompt }],
-        }),
-      });
+    const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": CLAUDE_API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-3-5-sonnet-20241022",
+        max_tokens: 1200,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
 
-      const claudeData = await claudeResponse.json();
-      const rawText = claudeData?.content?.[0]?.text || "{}";
+    const claudeData = await claudeResponse.json();
+    const answer = claudeData?.content?.[0]?.text || "No answer from Claude.";
 
-      try {
-        answer = JSON.parse(rawText);
-      } catch {
-        answer = { tldr: rawText || "Claude response parse failed." };
-      }
-    } catch (e) {
-      console.error("Claude API error:", e);
-      answer = { tldr: "Claude summary unavailable." };
-    }
-
-    // 5️⃣ Update user queries
+    // ✅ Update user usage
     user.used_queries += 1;
-    try {
-      fs.writeFileSync(filePath, JSON.stringify(userQueries, null, 2), "utf8");
-    } catch (err) {
-      console.error("Error updating user_queries.json:", err);
-    }
+    fs.writeFileSync(filePath, JSON.stringify(userQueries, null, 2));
 
-    res.status(200).json({ results, answer });
+    res.status(200).json({ results, answer, used: user.used_queries, max: user.max_queries });
 
   } catch (err) {
-    console.error("Tavily fetch error:", err);
-    res.status(500).json({ error: "Server error." });
+    console.error("Error:", err);
+    res.status(500).json({ error: "Server error occurred." });
   }
 }
 
