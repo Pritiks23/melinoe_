@@ -1,9 +1,36 @@
+// ==== User ID Handling ====
+let userId = sessionStorage.getItem("user_id");
+
+async function promptForUserId() {
+  while (!userId) {
+    userId = prompt(
+      "Enter your User ID to access Melinoë (you must have purchased queries):"
+    )?.trim();
+    if (!userId) alert("User ID is required to continue.");
+    else {
+      // Optional: validate ID with backend before allowing queries
+      const res = await fetch("/api/check_user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      const data = await res.json();
+      if (!data.valid) {
+        alert("Invalid User ID. Please contact support.");
+        userId = null;
+      } else sessionStorage.setItem("user_id", userId);
+    }
+  }
+}
+
+// Call prompt on page load
+window.addEventListener("load", promptForUserId);
+
 // ==== Chat functionality ====
 const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
 const messages = document.getElementById("messages");
 
-// Handle form submission
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const question = input.value.trim();
@@ -12,13 +39,29 @@ form.addEventListener("submit", async (e) => {
   addMessage("user", question);
   input.value = "";
 
-  addMessage("bot", "🔍 Searching...");
+  addMessage("bot", "🔍 Checking query availability...");
 
   try {
+    // Check if user has remaining queries
+    const usageRes = await fetch("/api/check_queries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: userId }),
+    });
+    const usageData = await usageRes.json();
+    if (!usageData.can_query) {
+      updateLastBotMessage(
+        `❌ You have no remaining queries. Please upgrade your plan.`
+      );
+      return;
+    }
+
+    addMessage("bot", "🔍 Searching...");
+
     const response = await fetch("/api/search", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: question }),
+      body: JSON.stringify({ query: question, user_id: userId }),
     });
 
     if (!response.ok) throw new Error("Network response was not ok");
@@ -49,6 +92,7 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
+// ===== Existing helper functions =====
 function addMessage(sender, text) {
   const div = document.createElement("div");
   div.classList.add("message");
@@ -74,170 +118,4 @@ function formatResults(results) {
     )
     .join("<br/><br/>");
 }
-
-// ==== Auto-suggest functionality ====
-const suggestionsBox = document.createElement('div');
-suggestionsBox.id = 'suggestions-box';
-suggestionsBox.style.position = 'absolute';
-suggestionsBox.style.background = '#fff';
-suggestionsBox.style.color = '#000';
-suggestionsBox.style.fontFamily = 'Arial, sans-serif';
-suggestionsBox.style.border = '1px solid #ccc';
-suggestionsBox.style.borderRadius = '4px';
-suggestionsBox.style.boxShadow = '0 2px 6px rgba(0,0,0,0.25)';
-suggestionsBox.style.padding = '2px 0';
-suggestionsBox.style.width = `${input.offsetWidth}px`;
-suggestionsBox.style.top = `${input.offsetTop + input.offsetHeight}px`;
-suggestionsBox.style.left = `${input.offsetLeft}px`;
-suggestionsBox.style.zIndex = '9999';
-suggestionsBox.style.display = 'none';
-input.parentNode.appendChild(suggestionsBox);
-
-let questions = [];
-
-// Load questions.json
-fetch('questions.json')
-  .then(res => res.json())
-  .then(data => { questions = data; });
-
-input.addEventListener('input', () => {
-  const query = input.value.toLowerCase();
-  suggestionsBox.innerHTML = '';
-  if (!query) {
-    suggestionsBox.style.display = 'none';
-    return;
-  }
-  const filtered = questions.filter(q => q.toLowerCase().includes(query)).slice(0, 2);
-  if (filtered.length === 0) {
-    suggestionsBox.style.display = 'none';
-    return;
-  }
-  filtered.forEach(q => {
-    const div = document.createElement('div');
-    div.textContent = q;
-    div.style.padding = '4px 8px';
-    div.style.cursor = 'pointer';
-    div.style.color = '#000';
-    div.style.background = '#fff';
-    div.addEventListener('mouseover', () => div.style.background = '#e0f0ff');
-    div.addEventListener('mouseout', () => div.style.background = '#fff');
-    div.addEventListener('click', () => {
-      input.value = q;
-      suggestionsBox.style.display = 'none';
-      input.focus();
-    });
-    suggestionsBox.appendChild(div);
-  });
-  suggestionsBox.style.display = 'block';
-});
-
-// Close suggestions if click outside
-document.addEventListener('click', (e) => {
-  if (!input.contains(e.target) && !suggestionsBox.contains(e.target)) {
-    suggestionsBox.style.display = 'none';
-  }
-});
-
-// ==== Constellation canvas ====
-const canvas = document.getElementById('constellation');
-const ctx = canvas.getContext('2d');
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-const stars = [];
-const numStars = 80;
-const maxDist = 120;
-
-class Star {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.vx = (Math.random() - 0.5) * 0.3;
-    this.vy = (Math.random() - 0.5) * 0.3;
-    this.radius = Math.random() * 2.5 + 1.5;
-  }
-  move() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(0, 150, 255, 0.8)';
-    ctx.fill();
-  }
-}
-
-function connectStars() {
-  for (let i = 0; i < stars.length; i++) {
-    for (let j = i + 1; j < stars.length; j++) {
-      const dx = stars[i].x - stars[j].x;
-      const dy = stars[i].y - stars[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < maxDist) {
-        ctx.beginPath();
-        ctx.moveTo(stars[i].x, stars[i].y);
-        ctx.lineTo(stars[j].x, stars[j].y);
-        ctx.lineWidth = 1.2;
-        ctx.strokeStyle = 'rgba(0, 150, 255, 0.4)';
-        ctx.stroke();
-      }
-    }
-  }
-}
-
-function animateConstellation() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  stars.forEach(star => { star.move(); star.draw(); });
-  connectStars();
-  requestAnimationFrame(animateConstellation);
-}
-
-for (let i = 0; i < numStars; i++) {
-  stars.push(new Star());
-}
-animateConstellation();
-
-/* new part*/
-// --- Intro Video Modal with "Don't show again" ---
-function setCookie(name, value, days) {
-  const d = new Date();
-  d.setTime(d.getTime() + (days*24*60*60*1000));
-  document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
-}
-
-function getCookie(name) {
-  const match = document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));
-  return match ? match[2] : null;
-}
-
-window.addEventListener('load', () => {
-  const modal = document.getElementById('intro-modal');
-  const closeBtn = document.getElementById('close-modal');
-  const dontShowCheckbox = document.getElementById('dont-show-again');
-
-  // Only show modal if cookie not set
-  if (getCookie('hideIntroModal') === 'true') return;
-
-  modal.style.display = 'block';
-
-  closeBtn.onclick = () => {
-    if (dontShowCheckbox.checked) setCookie('hideIntroModal', 'true', 365);
-    modal.style.display = 'none';
-  };
-
-  window.onclick = (event) => {
-    if (event.target === modal) {
-      if (dontShowCheckbox.checked) setCookie('hideIntroModal', 'true', 365);
-      modal.style.display = 'none';
-    }
-  };
-});
 
