@@ -1,8 +1,18 @@
-// ==== User ID Handling ====
+// ==== User ID Handling (Prompt if missing) ====
 let userId = sessionStorage.getItem('user_id');
-if (!userId) {
+
+function askForUserId() {
   userId = prompt("Enter your User ID:");
-  sessionStorage.setItem('user_id', userId);
+  if (!userId || userId.trim() === "") {
+    alert("You must enter a valid User ID to search!");
+    return askForUserId(); // repeat until valid
+  }
+  sessionStorage.setItem('user_id', userId.trim());
+}
+
+// Prompt if empty
+if (!userId || userId.trim() === "") {
+  askForUserId();
 }
 
 // ==== Chat functionality ====
@@ -31,20 +41,27 @@ form.addEventListener("submit", async (e) => {
     if (!response.ok) throw new Error("Network response was not ok");
 
     const data = await response.json();
+
+    // Check if user can query
+    if (data.error) {
+      updateLastBotMessage(`❌ ${data.error}`);
+      return;
+    }
+
     const a = data.answer || {};
     let structuredAnswer = `
-    <b>[Intent: ${a.intent || "Unknown"}]</b><br>
-    Confidence: ${a.confidence || "N/A"}<br><br>
-    <b>1. TL;DR</b> — ${a.tldr || "N/A"}<br><br>
-    <b>2. Short Answer</b> — ${a.short || "N/A"}<br><br>
-    <b>3. Why this is true</b> — ${a.why || "N/A"}<br><br>
-    <b>4. Implementation</b><pre>${a.implementation || "N/A"}</pre><br>
-    <b>5. Quick test / verification</b><pre>${a.test || "N/A"}</pre><br>
-    <b>6. Alternatives & tradeoffs</b><ul>${(a.alternatives || []).map(x => `<li>${x}</li>`).join("")}</ul>
-    <b>7. Caveats & risks</b><ul>${(a.caveats || []).map(x => `<li>${x}</li>`).join("")}</ul>
-    <b>8. Performance / cost impact</b> — ${a.cost || "N/A"}<br><br>
-    <b>9. Sources</b><ul>${(a.sources || []).map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a> — ${s.note}</li>`).join("")}</ul>
-    <b>10. Next steps</b><ul>${(a.nextSteps || []).map(x => `<li>${x}</li>`).join("")}</ul>
+      <b>[Intent: ${a.intent || "Unknown"}]</b><br>
+      Confidence: ${a.confidence || "N/A"}<br><br>
+      <b>1. TL;DR</b> — ${a.tldr || "N/A"}<br><br>
+      <b>2. Short Answer</b> — ${a.short || "N/A"}<br><br>
+      <b>3. Why this is true</b> — ${a.why || "N/A"}<br><br>
+      <b>4. Implementation</b><pre>${a.implementation || "N/A"}</pre><br>
+      <b>5. Quick test / verification</b><pre>${a.test || "N/A"}</pre><br>
+      <b>6. Alternatives & tradeoffs</b><ul>${(a.alternatives || []).map(x => `<li>${x}</li>`).join("")}</ul>
+      <b>7. Caveats & risks</b><ul>${(a.caveats || []).map(x => `<li>${x}</li>`).join("")}</ul>
+      <b>8. Performance / cost impact</b> — ${a.cost || "N/A"}<br><br>
+      <b>9. Sources</b><ul>${(a.sources || []).map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a> — ${s.note}</li>`).join("")}</ul>
+      <b>10. Next steps</b><ul>${(a.nextSteps || []).map(x => `<li>${x}</li>`).join("")}</ul>
     `;
 
     const formattedResults = formatResults(data.results);
@@ -147,68 +164,68 @@ document.addEventListener('click', (e) => {
 
 // ==== Constellation canvas ====
 const canvas = document.getElementById('constellation');
-const ctx = canvas.getContext('2d');
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-const stars = [];
-const numStars = 80;
-const maxDist = 120;
-
-class Star {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.vx = (Math.random() - 0.5) * 0.3;
-    this.vy = (Math.random() - 0.5) * 0.3;
-    this.radius = Math.random() * 2.5 + 1.5;
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
-  move() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(0, 150, 255, 0.8)';
-    ctx.fill();
-  }
-}
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
 
-function connectStars() {
-  for (let i = 0; i < stars.length; i++) {
-    for (let j = i + 1; j < stars.length; j++) {
-      const dx = stars[i].x - stars[j].x;
-      const dy = stars[i].y - stars[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < maxDist) {
-        ctx.beginPath();
-        ctx.moveTo(stars[i].x, stars[i].y);
-        ctx.lineTo(stars[j].x, stars[j].y);
-        ctx.lineWidth = 1.2;
-        ctx.strokeStyle = 'rgba(0, 150, 255, 0.4)';
-        ctx.stroke();
+  const stars = [];
+  const numStars = 80;
+  const maxDist = 120;
+
+  class Star {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.radius = Math.random() * 2.5 + 1.5;
+    }
+    move() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 150, 255, 0.8)';
+      ctx.fill();
+    }
+  }
+
+  function connectStars() {
+    for (let i = 0; i < stars.length; i++) {
+      for (let j = i + 1; j < stars.length; j++) {
+        const dx = stars[i].x - stars[j].x;
+        const dy = stars[i].y - stars[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < maxDist) {
+          ctx.beginPath();
+          ctx.moveTo(stars[i].x, stars[i].y);
+          ctx.lineTo(stars[j].x, stars[j].y);
+          ctx.lineWidth = 1.2;
+          ctx.strokeStyle = 'rgba(0, 150, 255, 0.4)';
+          ctx.stroke();
+        }
       }
     }
   }
-}
 
-function animateConstellation() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  stars.forEach(star => { star.move(); star.draw(); });
-  connectStars();
-  requestAnimationFrame(animateConstellation);
-}
+  function animateConstellation() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(star => { star.move(); star.draw(); });
+    connectStars();
+    requestAnimationFrame(animateConstellation);
+  }
 
-for (let i = 0; i < numStars; i++) {
-  stars.push(new Star());
+  for (let i = 0; i < numStars; i++) {
+    stars.push(new Star());
+  }
+  animateConstellation();
 }
-animateConstellation();
-
