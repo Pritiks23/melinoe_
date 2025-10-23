@@ -1,59 +1,53 @@
-import fs from "fs";
-import path from "path";
-
 export default async function handler(req, res) {
-  const { query, user_id } = req.body;
-
-  if (!query || !user_id) {
-    return res.status(400).json({ error: "Missing query or user_id." });
-  }
-
-  // Path to your user_queries.json
-  const filePath = path.join(process.cwd(), "user_queries.json");
-  let userQueries;
-
   try {
-    const fileData = fs.readFileSync(filePath, "utf8");
-    userQueries = JSON.parse(fileData);
-  } catch {
-    return res.status(500).json({ error: "Failed to read user data." });
-  }
+    const { query, user_id } = req.body;
 
-  // Check user
-  const user = userQueries[user_id];
-  if (!user) {
-    return res.status(403).json({ error: "User ID not found." });
-  }
+    if (!query) return res.status(400).json({ error: "Missing query." });
+    if (!user_id) return res.status(400).json({ error: "Missing user_id." });
 
-  if (user.used_queries >= user.max_queries) {
-    return res.status(403).json({ error: "Query limit reached." });
-  }
+    const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
+    const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
-  const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
-  const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
+    if (!TAVILY_API_KEY || !CLAUDE_API_KEY) {
+      return res.status(500).json({ error: "Missing API keys." });
+    }
 
-  try {
-    // Tavily Search
+    // 🔹 1. Tavily Search
     const tavilyResponse = await fetch("https://api.tavily.com/search", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${TAVILY_API_KEY}`,
       },
-      body: JSON.stringify({ query, max_results: 5 }),
+      body: JSON.stringify({
+        query,
+        max_results: 5,
+      }),
     });
+
+    if (!tavilyResponse.ok) {
+      const text = await tavilyResponse.text();
+      console.error("Tavily error:", text);
+      throw new Error("Tavily search failed");
+    }
 
     const tavilyData = await tavilyResponse.json();
     const results = tavilyData.results || [];
 
+    // 🔹 2. Context for Claude
     const contextText = results.length
-      ? results.map((r, i) => `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`).join("\n\n")
+      ? results
+          .map(
+            (r, i) =>
+              `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`
+          )
+          .join("\n\n")
       : "No relevant Tavily results found.";
 
-    // Claude prompt
+    // 🔹 3. Claude prompt
     const prompt = `
-System: You are an expert AI engineering assistant.
-Respond using ONLY the sources listed below.
+You are an expert AI assistant.
+Base your reasoning ONLY on the context below.
 
 CONTEXT:
 ${contextText}
@@ -61,6 +55,7 @@ ${contextText}
 QUESTION: ${query}
 `;
 
+    // 🔹 4. Claude API call
     const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
@@ -70,22 +65,24 @@ QUESTION: ${query}
       },
       body: JSON.stringify({
         model: "claude-3-5-sonnet-20241022",
-        max_tokens: 1200,
+        max_tokens: 1000,
         messages: [{ role: "user", content: prompt }],
       }),
     });
 
+    if (!claudeResponse.ok) {
+      const text = await claudeResponse.text();
+      console.error("Claude error:", text);
+      throw new Error("Claude API failed");
+    }
+
     const claudeData = await claudeResponse.json();
-    const answer = claudeData?.content?.[0]?.text || "No answer from Claude.";
+    const answer = claudeData?.content?.[0]?.text || "No answer returned.";
 
-    // ✅ Update user usage
-    user.used_queries += 1;
-    fs.writeFileSync(filePath, JSON.stringify(userQueries, null, 2));
-
-    res.status(200).json({ results, answer, used: user.used_queries, max: user.max_queries });
-
+    // 🔹 5. Return everything
+    res.status(200).json({ results, answer });
   } catch (err) {
-    console.error("Error:", err);
+    console.error("Server error:", err);
     res.status(500).json({ error: "Server error occurred." });
   }
 }
