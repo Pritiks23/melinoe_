@@ -13,5 +13,10 @@
     "tier": "Team",
     "max_queries": 2000,
     "used_queries": 0
+  },
+  "pv_test": {
+    "tier": "Testing",
+    "max_queries": 700,
+    "used_queries": 0
   }
 }
