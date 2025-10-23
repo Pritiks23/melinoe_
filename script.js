@@ -23,8 +23,18 @@ form.addEventListener("submit", async (e) => {
 
     if (!response.ok) throw new Error("Network response was not ok");
 
-    const data = await response.json();
-    const a = data.answer || {};
+    let data = await response.json();
+
+    // Parse the answer JSON if it's a string
+    let a = data.answer || {};
+    if (typeof a === "string") {
+      try {
+        a = JSON.parse(a);
+      } catch (err) {
+        console.error("Failed to parse answer JSON:", err);
+      }
+    }
+
     let structuredAnswer = `
     <b>[Intent: ${a.intent || "Unknown"}]</b><br>
     Confidence: ${a.confidence || "N/A"}<br><br>
@@ -70,7 +80,7 @@ function formatResults(results) {
   return results
     .map(
       (r) =>
-        `🔗 <a href="${r.url}" target="_blank">${r.title}</a><br/>${(r.content || "").slice(0, 600)}...`
+        `🔗 <a href="${r.url}" target="_blank">${r.title}</a><br/>${r.content.slice(0, 600)}...`
     )
     .join("<br/><br/>");
 }
@@ -205,7 +215,7 @@ for (let i = 0; i < numStars; i++) {
 }
 animateConstellation();
 
-/* Intro Video Modal with "Don't show again" */
+/* ==== Intro Video Modal with "Don't show again" ==== */
 function setCookie(name, value, days) {
   const d = new Date();
   d.setTime(d.getTime() + (days*24*60*60*1000));
