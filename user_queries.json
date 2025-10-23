@@ -1,0 +1,17 @@
+{
+  "str9276522": {
+    "tier": "Starter",
+    "max_queries": 100,
+    "used_queries": 0
+  },
+  "p2710025": {
+    "tier": "Pro",
+    "max_queries": 500,
+    "used_queries": 0
+  },
+  "te78524310": {
+    "tier": "Team",
+    "max_queries": 2000,
+    "used_queries": 0
+  }
+}
