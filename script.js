@@ -3,6 +3,13 @@ const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
 const messages = document.getElementById("messages");
 
+// ✅ Prompt for user_id once
+let user_id = localStorage.getItem("melinoe_user_id");
+if (!user_id) {
+  user_id = prompt("Enter your user_id:");
+  if (user_id) localStorage.setItem("melinoe_user_id", user_id);
+}
+
 // Handle form submission
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -18,12 +25,12 @@ form.addEventListener("submit", async (e) => {
     const response = await fetch("/api/search", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: question }),
+      body: JSON.stringify({ query: question, user_id }),
     });
 
-    if (!response.ok) throw new Error("Network response was not ok");
-
     const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Network response was not ok");
+
     const a = data.answer || {};
     let structuredAnswer = `
       <b>[Intent: ${a.intent || "Unknown"}]</b><br>
@@ -41,11 +48,13 @@ form.addEventListener("submit", async (e) => {
     `;
 
     const formattedResults = formatResults(data.results);
-    updateLastBotMessage(structuredAnswer + "<br><br>" + formattedResults);
+    let usageNote = data.used !== undefined ? `<br><b>Usage:</b> ${data.used}/${data.max} queries used` : "";
+
+    updateLastBotMessage(structuredAnswer + "<br><br>" + formattedResults + usageNote);
 
   } catch (err) {
     console.error("Error:", err);
-    updateLastBotMessage("❌ Error fetching results. Please try again.");
+    updateLastBotMessage(`❌ ${err.message || "Error fetching results. Please try again."}`);
   }
 });
 
@@ -235,5 +244,4 @@ window.addEventListener('load', () => {
     }
   };
 });
-
 
