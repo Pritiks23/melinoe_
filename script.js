@@ -70,7 +70,7 @@ function formatResults(results) {
   return results
     .map(
       (r) =>
-        `🔗 <a href="${r.url}" target="_blank">${r.title}</a><br/>${r.content.slice(0, 600)}...`
+        `🔗 <a href="${r.url}" target="_blank">${r.title}</a><br/>${(r.content || "").slice(0, 600)}...`
     )
     .join("<br/><br/>");
 }
@@ -205,8 +205,7 @@ for (let i = 0; i < numStars; i++) {
 }
 animateConstellation();
 
-/* new part*/
-// --- Intro Video Modal with "Don't show again" ---
+/* Intro Video Modal with "Don't show again" */
 function setCookie(name, value, days) {
   const d = new Date();
   d.setTime(d.getTime() + (days*24*60*60*1000));
@@ -223,7 +222,6 @@ window.addEventListener('load', () => {
   const closeBtn = document.getElementById('close-modal');
   const dontShowCheckbox = document.getElementById('dont-show-again');
 
-  // Only show modal if cookie not set
   if (getCookie('hideIntroModal') === 'true') return;
 
   modal.style.display = 'block';
@@ -240,6 +238,7 @@ window.addEventListener('load', () => {
     }
   };
 });
+
 
 
 
