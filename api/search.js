@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const { query, mode } = req.body; // include mode
+  const { query } = req.body;
   const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
   const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
@@ -25,13 +25,12 @@ export default async function handler(req, res) {
       ? results.map((r, i) => `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`).join("\n\n")
       : "No relevant Tavily results found.";
 
-    // 3️⃣ Prompt for Claude (mode included)
+    // 3️⃣ Prompt for Claude
     const prompt = `
 System: You are an expert AI engineering assistant.
 Tone rules: confident, concise, direct. Use active voice.
-Knowledge mode: ${mode} (Beginner: simple explanations, Applied: practical examples, Research: in-depth technical)
-
 If uncertain about a fact, quantify uncertainty and give a short plan to verify.
+
 Respond using ONLY the sources listed in 'evidence' unless explicitly marked speculation.
 Output must match this exact JSON schema:
 Output only valid JSON. Do not wrap the JSON in markdown, code fences, or strings. Each key must be top-level.
@@ -100,4 +99,3 @@ QUESTION: ${query}
     res.status(500).json({ error: "Server error." });
   }
 }
-
