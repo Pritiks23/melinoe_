@@ -44,10 +44,9 @@ Knowledge mode: ${data.mode || mode}<br><br>
 <b>10. Next steps</b><ul>${(a.nextSteps || []).map(x => `<li>${x}</li>`).join("")}</ul>
 <b>11. Diagrams</b>
 ${(a.diagrams && a.diagrams.length)
-  ? a.diagrams.map(d => {
-      return d.startsWith("graph") ? `<div class="mermaid">${d}</div>` : `<pre>${d}</pre>`;
-    }).join("<br>") 
+  ? a.diagrams.map(d => `<pre style="font-family: monospace; white-space: pre;">${d}</pre>`).join("<br>") 
   : " N/A"}
+
 
 
 `;
