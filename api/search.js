@@ -77,7 +77,7 @@ QUESTION: ${query}
 
       // ✅ Extract JSON from raw text
       try {
-        const jsonMatch = rawText.match(/\{[\s\S]*\}/); // Grab JSON block
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           answer = JSON.parse(jsonMatch[0]);
         } else {
@@ -99,4 +99,3 @@ QUESTION: ${query}
     res.status(500).json({ error: "Server error." });
   }
 }
-
