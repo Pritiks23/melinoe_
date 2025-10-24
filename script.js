@@ -1,15 +1,17 @@
 // ==== Chat functionality ====
 const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
+const modeSelect = document.getElementById("knowledge-mode"); // <-- new
 const messages = document.getElementById("messages");
 
 // Handle form submission
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const question = input.value.trim();
+  const mode = modeSelect.value; // <-- get selected mode
   if (!question) return;
 
-  addMessage("user", question);
+  addMessage("user", question + ` (Mode: ${mode})`);
   input.value = "";
   addMessage("bot", "🔍 Searching...");
 
@@ -17,7 +19,7 @@ form.addEventListener("submit", async (e) => {
     const response = await fetch("/api/search", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: question, user_id: "anon" }),
+      body: JSON.stringify({ query: question, mode, user_id: "anon" }), // <-- send mode
     });
 
     if (!response.ok) throw new Error("Network response was not ok");
@@ -25,10 +27,11 @@ form.addEventListener("submit", async (e) => {
     const data = await response.json();
     const a = data.answer || {};
 
-    // 🔹 Structured answer
+    // 🔹 Structured answer with mode
     const structuredAnswer = `
 <b>[Intent: ${a.intent || "Unknown"}]</b><br>
-Confidence: ${a.confidence || "N/A"}<br><br>
+Confidence: ${a.confidence || "N/A"}<br>
+Knowledge mode: ${data.mode || mode}<br><br>
 <b>1. TL;DR</b> — ${a.tldr || "N/A"}<br><br>
 <b>2. Short Answer</b> — ${a.short || "N/A"}<br><br>
 <b>3. Why this is true</b> — ${a.why || "N/A"}<br><br>
@@ -50,6 +53,7 @@ Confidence: ${a.confidence || "N/A"}<br><br>
   }
 });
 
+// ==== Rest of script.js remains untouched ====
 function addMessage(sender, text) {
   const div = document.createElement("div");
   div.classList.add("message");
@@ -152,13 +156,6 @@ window.addEventListener('load', ()=>{
     if(event.target===modal){ if(dontShowCheckbox?.checked) setCookie('hideIntroModal','true',365); modal.style.display='none'; }
   };
 });
-
-
-
-
-
-
-
 
 
 
