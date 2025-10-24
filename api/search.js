@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const { query } = req.body;
+  const { query, mode } = req.body; // <-- Added mode
   const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
   const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
@@ -14,6 +14,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({ 
         query, 
         max_results: 5,
+        mode // <-- pass mode to Tavily if supported
       }),
     });
 
@@ -30,6 +31,7 @@ export default async function handler(req, res) {
 System: You are an expert AI engineering assistant.
 Tone rules: confident, concise, direct. Use active voice.
 If uncertain about a fact, quantify uncertainty and give a short plan to verify.
+Knowledge mode: ${mode || "Applied"}
 
 Respond using ONLY the sources listed in 'evidence' unless explicitly marked speculation.
 Output must match this exact JSON schema:
@@ -92,7 +94,7 @@ QUESTION: ${query}
       answer = { tldr: "Claude summary unavailable." };
     }
 
-    res.status(200).json({ results, answer });
+    res.status(200).json({ results, answer, mode }); // <-- include mode in response
 
   } catch (err) {
     console.error("Tavily fetch error:", err);
