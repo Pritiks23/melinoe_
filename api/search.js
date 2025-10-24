@@ -33,8 +33,23 @@ Tone rules: confident, concise, direct. Use active voice.
 If uncertain about a fact, quantify uncertainty and give a short plan to verify.
 Knowledge mode: ${mode || "Applied"}
 
-Respond using ONLY the sources listed in 'evidence' unless explicitly marked speculation.
-Where applicable, include static conceptual diagrams that explain processes, flows, or structures (no numeric or time-varying data). Use diagrams in a format like Mermaid or simple ASCII flowcharts.
+Whenever it makes sense, create **static conceptual diagrams** that explain processes, flows, or structures in a simple, clear way. 
+Use either ASCII flowcharts or Mermaid syntax. **Do not use numeric or time-varying data.**
+
+Return the diagram(s) in the "diagrams" field as an array of strings.
+For example:
+
+"diagrams": [
+"ASCII example: 
+MACHINE LEARNING
+   |
+   ...",
+"Mermaid example:
+graph TD
+A[Machine Learning] --> B[Supervised Learning]
+..."
+]
+
 Output must match this exact JSON schema:
 Output only valid JSON. Do not wrap the JSON in markdown, code fences, or strings. Each key must be top-level.
 {
