@@ -92,4 +92,3 @@ Do NOT include extra text.
     res.status(500).json({ error: "Server error occurred." });
   }
 }
-
