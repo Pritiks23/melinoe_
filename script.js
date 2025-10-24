@@ -2,13 +2,12 @@
 const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
 const messages = document.getElementById("messages");
-const modeSelect = document.getElementById("knowledge-mode");
 
+// Handle form submission
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const question = input.value.trim();
   if (!question) return;
-  const selectedMode = modeSelect.value;
 
   addMessage("user", question);
   input.value = "";
@@ -18,7 +17,7 @@ form.addEventListener("submit", async (e) => {
     const response = await fetch("/api/search", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: question, user_id: "anon", mode: selectedMode }),
+      body: JSON.stringify({ query: question, user_id: "anon" }),
     });
 
     if (!response.ok) throw new Error("Network response was not ok");
@@ -26,6 +25,7 @@ form.addEventListener("submit", async (e) => {
     const data = await response.json();
     const a = data.answer || {};
 
+    // 🔹 Structured answer
     const structuredAnswer = `
 <b>[Intent: ${a.intent || "Unknown"}]</b><br>
 Confidence: ${a.confidence || "N/A"}<br><br>
@@ -135,6 +135,32 @@ if (canvas) {
 
 // ==== Intro Modal "Don't show again" ====
 function setCookie(name,value,days){ const d=new Date(); d.setTime(d.getTime()+(days*24*60*60*1000)); document.cookie=`${name}=${value};expires=${d.toUTCString()};path=/`; }
-function getCookie(name){ const match
+function getCookie(name){ const match=document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)')); return match?match[2]:null; }
+
+window.addEventListener('load', ()=>{
+  const modal=document.getElementById('intro-modal');
+  const closeBtn=document.getElementById('close-modal');
+  const dontShowCheckbox=document.getElementById('dont-show-again');
+  if(!modal||!closeBtn) return;
+  if(getCookie('hideIntroModal')==='true') return;
+  modal.style.display='block';
+  closeBtn.onclick=()=>{
+    if(dontShowCheckbox?.checked) setCookie('hideIntroModal','true',365);
+    modal.style.display='none';
+  };
+  window.onclick=(event)=>{
+    if(event.target===modal){ if(dontShowCheckbox?.checked) setCookie('hideIntroModal','true',365); modal.style.display='none'; }
+  };
+});
+
+
+
+
+
+
+
+
+
+
 
 
