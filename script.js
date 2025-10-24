@@ -42,9 +42,11 @@ Knowledge mode: ${data.mode || mode}<br><br>
 <b>8. Performance / cost impact</b> — ${a.cost || "N/A"}<br><br>
 <b>9. Sources</b><ul>${(a.sources || []).map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a> — ${s.note}</li>`).join("")}</ul>
 <b>10. Next steps</b><ul>${(a.nextSteps || []).map(x => `<li>${x}</li>`).join("")}</ul>
-<b>11. Diagrams</b>${(a.diagrams && a.diagrams.length)
+<b>11. Diagrams</b>
+${(a.diagrams && a.diagrams.length)
   ? a.diagrams.map(d => `<pre>${d}</pre>`).join("<br>") 
   : " N/A"}
+
 `;
 
     const formattedResults = formatResults(data.results);
