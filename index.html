@@ -62,7 +62,6 @@
     #chat-form {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
     }
 
     #user-input {
@@ -80,15 +79,6 @@
     #user-input:focus {
       border-color: #00aaff;
       box-shadow: 0 0 8px #0077ff;
-    }
-
-    select#knowledge-mode {
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      background-color: #0a0a0a;
-      color: #fff;
-      font-size: 1rem;
     }
 
     button {
@@ -221,11 +211,6 @@
   <section id="chat-section">
     <div id="chat-input-box">
       <form id="chat-form">
-        <select id="knowledge-mode">
-          <option value="Beginner">Beginner</option>
-          <option value="Applied">Applied</option>
-          <option value="Research">Research</option>
-        </select>
         <input type="text" id="user-input" placeholder="Ask any AI engineering question..." required />
         <button type="submit">Search</button>
       </form>
@@ -253,6 +238,44 @@
   </section>
 
   <script src="script.js"></script>
+  <script>
+    // --- Intro Video Modal with "Don't show again" ---
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days*24*60*60*1000));
+      document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+    }
+
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));
+      return match ? match[2] : null;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => { // <-- ensure DOM fully loaded
+      const modal = document.getElementById('intro-modal');
+      const closeBtn = document.getElementById('close-modal');
+      const dontShowCheckbox = document.getElementById('dont-show-again');
+
+      if (!modal || !closeBtn) return;
+
+      // Always show modal unless cookie set
+      if (getCookie('hideIntroModal') !== 'true') {
+        modal.style.display = 'block';
+      }
+
+      closeBtn.onclick = () => {
+        if (dontShowCheckbox?.checked) setCookie('hideIntroModal', 'true', 365);
+        modal.style.display = 'none';
+      };
+
+      window.onclick = (event) => {
+        if (event.target === modal) {
+          if (dontShowCheckbox?.checked) setCookie('hideIntroModal', 'true', 365);
+          modal.style.display = 'none';
+        }
+      };
+    });
+  </script>
 </body>
 </html>
 
