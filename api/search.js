@@ -1,6 +1,5 @@
-// api/search.js
 export default async function handler(req, res) {
-  const { query, mode } = req.body; // <-- includes mode
+  const { query, mode } = req.body;
   const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
   const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
@@ -12,10 +11,10 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${TAVILY_API_KEY}`,
       },
-      body: JSON.stringify({ 
-        query, 
+      body: JSON.stringify({
+        query,
         max_results: 5,
-        mode // <-- pass mode if Tavily supports it
+        mode
       }),
     });
 
@@ -27,36 +26,21 @@ export default async function handler(req, res) {
       ? results.map((r, i) => `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`).join("\n\n")
       : "No relevant Tavily results found.";
 
-    // 3️⃣ Prompt for Claude (⬅️ fixed version)
+    // 3️⃣ Claude prompt — STRICT JSON STRUCTURE
     const prompt = `
 System: You are an expert AI engineering assistant.
-Tone rules: confident, concise, direct. Use active voice.
-If uncertain about a fact, quantify uncertainty and give a short plan to verify.
+Tone: Confident, concise, structured, direct. Use active voice.
+If uncertain, state uncertainty and propose how to verify.
+
 Knowledge mode: ${mode || "Applied"}
 
-Whenever it makes sense, create **static conceptual diagrams** that explain processes, flows, or structures.
-Use **ASCII style diagrams** (like ChatGPT) with lines, boxes, and arrows. Do not use numeric or time-varying data.
-Do not use Mermaid or Graphviz syntax.
+Always return every field in the schema below. If something is unknown, infer a likely answer instead of writing "N/A".
 
-Return the diagram(s) in the "diagrams" field as an array of strings.
+Whenever it helps explain something, create **static conceptual ASCII diagrams** that describe flows, architectures, or relationships. Return them as plain text (no Markdown, Mermaid, or Graphviz).
 
-Fill each field based on the question and retrieved context:
-- "intent": classify what kind of query this is (e.g., concept_explanation, comparison, implementation, workflow, design, evaluation, or other).
-- "confidence": estimate confidence level (High, Medium, Low).
-- "tldr": 1-sentence summary of the core answer.
-- "short": 2–3 sentence concise answer.
-- "why": explain why that answer is true.
-- "implementation": describe how to implement or apply the concept.
-- "test": how to verify or test it quickly.
-- "alternatives": list other valid approaches or perspectives.
-- "caveats": note assumptions, risks, or limitations.
-- "cost": summarize performance, time, or financial cost implications.
-- "sources": fill with 2–3 short structured entries summarizing context sources.
-- "nextSteps": list follow-up actions or learning paths.
-- "diagrams": include ASCII-style conceptual diagrams if applicable.
+OUTPUT REQUIREMENTS:
+Return ONLY valid JSON, no markdown fences, no prose outside JSON. Output must strictly follow this schema:
 
-Output must match this exact JSON schema:
-Output only valid JSON. Do not wrap the JSON in markdown, code fences, or strings. Each key must be top-level.
 {
   "intent": "string",
   "confidence": "string",
@@ -68,7 +52,7 @@ Output only valid JSON. Do not wrap the JSON in markdown, code fences, or string
   "alternatives": ["string"],
   "caveats": ["string"],
   "cost": "string",
-  "sources": [{"title":"", "url":"", "note":""}],
+  "sources": [{"title": "string", "url": "string", "note": "string"}],
   "nextSteps": ["string"],
   "diagrams": ["string"]
 }
@@ -99,9 +83,9 @@ QUESTION: ${query}
       const claudeData = await claudeResponse.json();
       const rawText = claudeData?.content?.[0]?.text || "{}";
 
-      // ✅ Extract JSON from raw text
+      // ✅ Extract and parse JSON safely
       try {
-        const jsonMatch = rawText.match(/\{[\s\S]*\}/); // Grab JSON block
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           answer = JSON.parse(jsonMatch[0]);
         } else {
@@ -111,23 +95,15 @@ QUESTION: ${query}
         console.error("Claude JSON parse error:", e);
         answer = { tldr: rawText };
       }
-
-      // 🧩 Safety net fallback
-      if (!answer.intent || answer.intent === "Unknown") {
-        answer.intent = "general_explanation";
-        answer.confidence = "Medium";
-      }
-
     } catch (e) {
       console.error("Claude API error:", e);
       answer = { tldr: "Claude summary unavailable." };
     }
 
-    // 5️⃣ Send final response
-    res.status(200).json({ results, answer, mode }); // <-- include mode in response
-
+    res.status(200).json({ results, answer, mode });
   } catch (err) {
     console.error("Tavily fetch error:", err);
     res.status(500).json({ error: "Server error." });
   }
 }
+
