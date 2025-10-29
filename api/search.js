@@ -1,5 +1,6 @@
+// api/search.js
 export default async function handler(req, res) {
-  const { query, mode } = req.body; // <-- Added mode
+  const { query, mode } = req.body; // <-- includes mode
   const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
   const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
@@ -14,7 +15,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({ 
         query, 
         max_results: 5,
-        mode // <-- pass mode to Tavily if supported
+        mode // <-- pass mode if Tavily supports it
       }),
     });
 
@@ -26,7 +27,7 @@ export default async function handler(req, res) {
       ? results.map((r, i) => `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`).join("\n\n")
       : "No relevant Tavily results found.";
 
-    // 3️⃣ Prompt for Claude
+    // 3️⃣ Prompt for Claude (⬅️ fixed version)
     const prompt = `
 System: You are an expert AI engineering assistant.
 Tone rules: confident, concise, direct. Use active voice.
@@ -38,6 +39,21 @@ Use **ASCII style diagrams** (like ChatGPT) with lines, boxes, and arrows. Do no
 Do not use Mermaid or Graphviz syntax.
 
 Return the diagram(s) in the "diagrams" field as an array of strings.
+
+Fill each field based on the question and retrieved context:
+- "intent": classify what kind of query this is (e.g., concept_explanation, comparison, implementation, workflow, design, evaluation, or other).
+- "confidence": estimate confidence level (High, Medium, Low).
+- "tldr": 1-sentence summary of the core answer.
+- "short": 2–3 sentence concise answer.
+- "why": explain why that answer is true.
+- "implementation": describe how to implement or apply the concept.
+- "test": how to verify or test it quickly.
+- "alternatives": list other valid approaches or perspectives.
+- "caveats": note assumptions, risks, or limitations.
+- "cost": summarize performance, time, or financial cost implications.
+- "sources": fill with 2–3 short structured entries summarizing context sources.
+- "nextSteps": list follow-up actions or learning paths.
+- "diagrams": include ASCII-style conceptual diagrams if applicable.
 
 Output must match this exact JSON schema:
 Output only valid JSON. Do not wrap the JSON in markdown, code fences, or strings. Each key must be top-level.
@@ -53,7 +69,7 @@ Output only valid JSON. Do not wrap the JSON in markdown, code fences, or string
   "caveats": ["string"],
   "cost": "string",
   "sources": [{"title":"", "url":"", "note":""}],
-  "nextSteps": ["string"]
+  "nextSteps": ["string"],
   "diagrams": ["string"]
 }
 
@@ -95,11 +111,19 @@ QUESTION: ${query}
         console.error("Claude JSON parse error:", e);
         answer = { tldr: rawText };
       }
+
+      // 🧩 Safety net fallback
+      if (!answer.intent || answer.intent === "Unknown") {
+        answer.intent = "general_explanation";
+        answer.confidence = "Medium";
+      }
+
     } catch (e) {
       console.error("Claude API error:", e);
       answer = { tldr: "Claude summary unavailable." };
     }
 
+    // 5️⃣ Send final response
     res.status(200).json({ results, answer, mode }); // <-- include mode in response
 
   } catch (err) {
