@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const { query, mode } = req.body; // <-- Added mode
+  const { query } = req.body;
   const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
   const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
@@ -14,7 +14,6 @@ export default async function handler(req, res) {
       body: JSON.stringify({ 
         query, 
         max_results: 5,
-        mode // <-- pass mode to Tavily if supported
       }),
     });
 
@@ -31,14 +30,8 @@ export default async function handler(req, res) {
 System: You are an expert AI engineering assistant.
 Tone rules: confident, concise, direct. Use active voice.
 If uncertain about a fact, quantify uncertainty and give a short plan to verify.
-Knowledge mode: ${mode || "Applied"}
 
-Whenever it makes sense, create **static conceptual diagrams** that explain processes, flows, or structures.
-Use **ASCII style diagrams** (like ChatGPT) with lines, boxes, and arrows. Do not use numeric or time-varying data.
-Do not use Mermaid or Graphviz syntax.
-
-Return the diagram(s) in the "diagrams" field as an array of strings.
-
+Respond using ONLY the sources listed in 'evidence' unless explicitly marked speculation.
 Output must match this exact JSON schema:
 Output only valid JSON. Do not wrap the JSON in markdown, code fences, or strings. Each key must be top-level.
 {
@@ -54,7 +47,6 @@ Output only valid JSON. Do not wrap the JSON in markdown, code fences, or string
   "cost": "string",
   "sources": [{"title":"", "url":"", "note":""}],
   "nextSteps": ["string"]
-  "diagrams": ["string"]
 }
 
 CONTEXT:
@@ -100,10 +92,11 @@ QUESTION: ${query}
       answer = { tldr: "Claude summary unavailable." };
     }
 
-    res.status(200).json({ results, answer, mode }); // <-- include mode in response
+    res.status(200).json({ results, answer });
 
   } catch (err) {
     console.error("Tavily fetch error:", err);
     res.status(500).json({ error: "Server error." });
   }
 }
+
