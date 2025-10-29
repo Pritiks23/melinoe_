@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const { query, mode } = req.body;
+  const { query, mode } = req.body; // <-- Added mode
   const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
   const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
@@ -11,10 +11,10 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${TAVILY_API_KEY}`,
       },
-      body: JSON.stringify({
-        query,
+      body: JSON.stringify({ 
+        query, 
         max_results: 5,
-        mode
+        mode // <-- pass mode to Tavily if supported
       }),
     });
 
@@ -26,21 +26,21 @@ export default async function handler(req, res) {
       ? results.map((r, i) => `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`).join("\n\n")
       : "No relevant Tavily results found.";
 
-    // 3️⃣ Claude prompt — STRICT JSON STRUCTURE
+    // 3️⃣ Prompt for Claude
     const prompt = `
 System: You are an expert AI engineering assistant.
-Tone: Confident, concise, structured, direct. Use active voice.
-If uncertain, state uncertainty and propose how to verify.
-
+Tone rules: confident, concise, direct. Use active voice.
+If uncertain about a fact, quantify uncertainty and give a short plan to verify.
 Knowledge mode: ${mode || "Applied"}
 
-Always return every field in the schema below. If something is unknown, infer a likely answer instead of writing "N/A".
+Whenever it makes sense, create **static conceptual diagrams** that explain processes, flows, or structures.
+Use **ASCII style diagrams** (like ChatGPT) with lines, boxes, and arrows. Do not use numeric or time-varying data.
+Do not use Mermaid or Graphviz syntax.
 
-Whenever it helps explain something, create **static conceptual ASCII diagrams** that describe flows, architectures, or relationships. Return them as plain text (no Markdown, Mermaid, or Graphviz).
+Return the diagram(s) in the "diagrams" field as an array of strings.
 
-OUTPUT REQUIREMENTS:
-Return ONLY valid JSON, no markdown fences, no prose outside JSON. Output must strictly follow this schema:
-
+Output must match this exact JSON schema:
+Output only valid JSON. Do not wrap the JSON in markdown, code fences, or strings. Each key must be top-level.
 {
   "intent": "string",
   "confidence": "string",
@@ -52,8 +52,8 @@ Return ONLY valid JSON, no markdown fences, no prose outside JSON. Output must s
   "alternatives": ["string"],
   "caveats": ["string"],
   "cost": "string",
-  "sources": [{"title": "string", "url": "string", "note": "string"}],
-  "nextSteps": ["string"],
+  "sources": [{"title":"", "url":"", "note":""}],
+  "nextSteps": ["string"]
   "diagrams": ["string"]
 }
 
@@ -83,9 +83,9 @@ QUESTION: ${query}
       const claudeData = await claudeResponse.json();
       const rawText = claudeData?.content?.[0]?.text || "{}";
 
-      // ✅ Extract and parse JSON safely
+      // ✅ Extract JSON from raw text
       try {
-        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/); // Grab JSON block
         if (jsonMatch) {
           answer = JSON.parse(jsonMatch[0]);
         } else {
@@ -100,7 +100,8 @@ QUESTION: ${query}
       answer = { tldr: "Claude summary unavailable." };
     }
 
-    res.status(200).json({ results, answer, mode });
+    res.status(200).json({ results, answer, mode }); // <-- include mode in response
+
   } catch (err) {
     console.error("Tavily fetch error:", err);
     res.status(500).json({ error: "Server error." });
