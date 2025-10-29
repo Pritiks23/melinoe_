@@ -3,6 +3,13 @@ export default async function handler(req, res) {
   const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
   const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
+  if (!query) {
+    return res.status(400).json({ error: "Missing query." });
+  }
+
+  if (!TAVILY_API_KEY) console.warn("⚠️ Missing Tavily API key");
+  if (!CLAUDE_API_KEY) console.warn("⚠️ Missing Claude API key");
+
   try {
     // 1️⃣ Tavily search
     const tavilyResponse = await fetch("https://api.tavily.com/search", {
@@ -11,19 +18,26 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${TAVILY_API_KEY}`,
       },
-      body: JSON.stringify({ 
-        query, 
+      body: JSON.stringify({
+        query,
         max_results: 5,
-        mode // <-- pass mode to Tavily if supported
+        mode, // <-- pass mode to Tavily if supported
       }),
     });
+
+    if (!tavilyResponse.ok) {
+      console.error("Tavily API returned status:", tavilyResponse.status);
+      throw new Error("Tavily API error");
+    }
 
     const tavilyData = await tavilyResponse.json();
     const results = tavilyData.results || [];
 
     // 2️⃣ Build context for Claude
     const contextText = results.length
-      ? results.map((r, i) => `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`).join("\n\n")
+      ? results.map(
+          (r, i) => `${i + 1}) ${r.title}\n${r.content}\nSource: ${r.url}`
+        ).join("\n\n")
       : "No relevant Tavily results found.";
 
     // 3️⃣ Prompt for Claude
@@ -53,7 +67,7 @@ Output only valid JSON. Do not wrap the JSON in markdown, code fences, or string
   "caveats": ["string"],
   "cost": "string",
   "sources": [{"title":"", "url":"", "note":""}],
-  "nextSteps": ["string"]
+  "nextSteps": ["string"],
   "diagrams": ["string"]
 }
 
@@ -80,6 +94,11 @@ QUESTION: ${query}
         }),
       });
 
+      if (!claudeResponse.ok) {
+        console.error("Claude API returned status:", claudeResponse.status);
+        throw new Error("Claude API error");
+      }
+
       const claudeData = await claudeResponse.json();
       const rawText = claudeData?.content?.[0]?.text || "{}";
 
@@ -100,11 +119,13 @@ QUESTION: ${query}
       answer = { tldr: "Claude summary unavailable." };
     }
 
-    res.status(200).json({ results, answer, mode }); // <-- include mode in response
+    // 5️⃣ Return results
+    res.status(200).json({ results, answer, mode });
 
   } catch (err) {
     console.error("Tavily fetch error:", err);
-    res.status(500).json({ error: "Server error." });
+    res.status(500).json({ error: err.message || "Server error." });
   }
 }
+
 
